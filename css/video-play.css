@@ -1,0 +1,89 @@
+.video-play {
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.video-play::after {
+	position: absolute;
+	content: '';
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	background-color: rgba(29, 29, 29, 0.2);
+	pointer-events: none;
+	/*border-radius: 5px;*/
+}
+
+.video {
+	object-fit: cover;
+	border-radius: 0px;
+}
+
+.video-btn {
+	position: absolute;
+	overflow: hidden;
+	display: flex;
+	padding: 1px;
+	border-radius: 50%;
+	font-size: 3.75rem;
+	line-height: 1;
+	color: #fff;
+	transition: all 0.2s ease-in-out;
+	z-index: 1;
+	background-color: transparent;
+	border: none;
+}
+
+.video-btn::before {
+	font-family: 'Material Icons Sharp';
+	font-size: 20vh;
+}
+
+.video-btn.play::before {
+	content: '\e039';
+	position: absolute;
+	top: 30%;
+	bottom: 30%;
+	left: 0;
+	right: 0;
+}
+
+.video-btn.pause {
+	opacity: 0;
+}
+
+.video-btn.pause::before {
+	content: '\e036';
+	position: absolute;
+	top: 30%;
+	bottom: 30%;
+	left: 0;
+	right: 0;
+}
+
+.desktop .video-btn.pause {
+	opacity: 0;
+}
+
+.desktop .video-play:hover .video-btn.pause {
+	opacity: 1;
+}
+
+.desktop .video-btn.play:hover {
+	opacity: .7;
+}
+
+@media (orientation: landscape) and (min-width: 480px) and (max-width: 767.98px) {
+	.video-btn {
+		font-size: 2.5rem;
+	}
+}
+
+@media (max-width: 992px) {
+	.video-btn::before {
+		font-size: 12vh;
+	}
+}
