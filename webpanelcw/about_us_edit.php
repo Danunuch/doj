@@ -132,7 +132,7 @@ if (isset($_POST['save'])) {
                             <div class="flex-end"></div>
                             <h4 class="card-title"></h4>
                             
-                            <button type="submit" name="save" class="btn btn-save">Save</button>
+                            <button type="submit" name="save" class="btn btn-save1">Save</button>
                         </div>
                         <div class="card-body">
                             <h5>Content</h5>

@@ -138,8 +138,8 @@ if (isset($_POST['delete_all'])) {
                                                 <input type="checkbox" class="form-check-input checkbox-select" id="select_all">
                                             </th>
                                             <th scope="col">Cover Image</th>
-                                            <th scope="col">Service Name</th>
-                                            <th scope="col">Creation Date</th>
+                                            <th scope="col" style="width: 20%;">Service Name</th>
+                                            <th scope="col" style="width: 30%;">Creation Date</th>
                                             <th scope="col">Status</th>
                                             <th scope="col">Manage</th>
                                         </tr>

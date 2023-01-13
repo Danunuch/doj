@@ -89,13 +89,11 @@ if (isset($_POST['delete_all'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - Mazer Admin Dashboard</title>
-
     <link rel="stylesheet" href="assets/css/main/app.css">
     <link rel="stylesheet" href="assets/css/main/app-dark.css">
     <link rel="stylesheet" href="css/product.css?v=<?php echo time(); ?>">
     <!-- <link rel="shortcut icon" href="assets/images/logo/favicon.svg" type="image/x-icon"> -->
     <link rel="shortcut icon" href="image/logodoj.png" type="image/png">
-
     <link rel="stylesheet" href="assets/css/shared/iconly.css">
 
 </head>
@@ -121,7 +119,7 @@ if (isset($_POST['delete_all'])) {
                             <div class="flex-end">
                                 <a href="project_ref_en"><button type="button" class="btn btn-edit">EN</button></a>
                                 <a href="project_ref_cn"><button type="button" class="btn btn-edit">CN</button></a>
-                                <a href="project_ref_add"><button type="button" class="btn btn-edit">Add</button></a>
+                                <a href="project_ref_add"><button type="button" class="btn btn-add">Add</button></a>
                                 <button type="submit" onclick="return confirm('Do you want to delete all?');" name="delete_all" class="btn btn-del">Delete</button>
 
                             </div>
@@ -173,7 +171,7 @@ if (isset($_POST['delete_all'])) {
                                                 </td>
                                                 <td align="center">
                                                     <div class="manage">
-                                                        <a href="project_ref_edit?project_id=<?php echo $row_project[$i]['project_id']; ?>"><button type="button" class="btn" style="background-color:#ffc107; color: #FFFFFF;"><i class="bi bi-pencil-square"></i></button></a>
+                                                        <a href="project_ref_edit?project_id=<?php echo $row_project[$i]['project_id']; ?>"><button type="button" class="btn" style="background-color:#ffc107; color: #FFFFFF; margin:3px;"><i class="bi bi-pencil-square"></i></button></a>
                                                         <button class="btn" onclick="return confirm('Do you want to delete?');" name="delete_all" style="background-color:#ff4122; color: #FFFFFF;"><i class="bi bi-trash"></i></button>
                                                     </div>
                                                 </td>

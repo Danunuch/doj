@@ -150,7 +150,9 @@ if (isset($_POST['edit-service'])) {
                     <div class="card">
                         <div class="card-header">
                             <h4 class="card-title">Service</h4>
+                            <div class="box-btn-save">
                             <button type="submit" name="edit-service" class="btn btn-save">Save</button>
+                        </div>
                         </div>
                         <div class="title">
                             <h6 class="txt-cover">Cover Image</h6>

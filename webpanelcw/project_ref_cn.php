@@ -121,7 +121,7 @@ if (isset($_POST['delete_all'])) {
                             <div class="flex-end"> 
                                 <a href="project_ref"><button type="button" class="btn btn-edit">TH</button></a>
                                 <a href="project_ref_en"><button type="button" class="btn btn-edit">EN</button></a>
-                                <a href="project_ref_add_cn"><button type="button" class="btn btn-edit">Add</button></a>
+                                <a href="project_ref_add_cn"><button type="button" class="btn btn-add">Add</button></a>
                                 <button type="submit" onclick="return confirm('Do you want to delete all?');" name="delete_all" class="btn btn-del">Delete</button>
 
                             </div>
@@ -173,7 +173,7 @@ if (isset($_POST['delete_all'])) {
                                                 </td>
                                                 <td align="center">
                                                     <div class="manage">
-                                                        <a href="project_ref_edit_cn?project_id=<?php echo $row_project_cn[$i]['project_id']; ?>"><button type="button" class="btn" style="background-color:#ffc107; color: #FFFFFF;"><i class="bi bi-pencil-square"></i></button></a>
+                                                        <a href="project_ref_edit_cn?project_id=<?php echo $row_project_cn[$i]['project_id']; ?>"><button type="button" class="btn" style="background-color:#ffc107; margin:3px; color: #FFFFFF;"><i class="bi bi-pencil-square"></i></button></a>
                                                         <button class="btn" onclick="return confirm('Do you want to delete?');" name="delete_all" style="background-color:#ff4122; color: #FFFFFF;"><i class="bi bi-trash"></i></button>
                                                     </div>
                                                 </td>

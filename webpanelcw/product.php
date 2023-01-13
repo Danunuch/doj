@@ -121,7 +121,7 @@ if (isset($_POST['delete_all'])) {
                             <div class="flex-end">
                                 <a href="product_en"><button type="button" class="btn btn-edit">EN</button></a>
                                 <a href="product_cn"><button type="button" class="btn btn-edit">CN</button></a>
-                                <a href="product_add"><button type="button" class="btn btn-edit">Add</button></a>
+                                <a href="product_add"><button type="button" class="btn btn-add">Add</button></a>
                                 <button type="submit" onclick="return confirm('Do you want to delete all?');" name="delete_all" class="btn btn-del">Delete</button>
 
                             </div>

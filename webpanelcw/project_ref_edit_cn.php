@@ -139,8 +139,6 @@ if (isset($_POST['edit-project'])) {
                             <button type="submit" name="edit-project" class="btn btn-save">Save</button>
                         </div>
                         <div class="card-body">
-
-
                             <div class="content">
                                 <div class="project-name">
                                     <h6>Project Name</h6>

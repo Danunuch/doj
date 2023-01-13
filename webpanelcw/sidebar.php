@@ -42,7 +42,12 @@
                         <span>Home</span>
                     </a>
                 </li>
-
+                <li class="sidebar-item  about" id="about">
+                    <a href="content" class='sidebar-link'>
+                    <i class="bi bi-journal-text"></i>
+                        <span>Content</span>
+                    </a>
+                </li>
                 <li class="sidebar-item  about" id="about">
                     <a href="about_us" class='sidebar-link'>
                     <i class="bi bi-file-person"></i>
