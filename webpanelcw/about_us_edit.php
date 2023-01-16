@@ -134,7 +134,7 @@ if (isset($_POST['save'])) {
                             
                             <button type="submit" name="save" class="btn btn-save1">Save</button>
                         </div>
-                        <div class="card-body">
+                        <div class="card-body" style="display: flex;">
                             <h5>Content</h5>
                             <textarea name="content"><?php echo $row['content']; ?></textarea>
                             <script>
@@ -156,7 +156,7 @@ if (isset($_POST['save'])) {
                                 });
                             </script>
                         </div>
-                        <div class="card-body">
+                        <div class="card-body"  style="display: flex;" >
                             <!-- <h5>Image</h5> -->
                             <div class="box-upload-img">
                                 <h5>Upload Image here</h5>
@@ -166,7 +166,7 @@ if (isset($_POST['save'])) {
                                 </div>
                                 <span style="color: #ff4122;">Only file are support ('jpg', 'jpeg', 'png', 'webp').</span>
                                 <div class="preview-img">
-                                    <img id="previewImg" width="100%" src="upload/upload_about_us/<?php echo $row['img'] ?>" alt="">
+                                    <img id="previewImg" width="100%" style="display: flex;" src="upload/upload_about_us/<?php echo $row['img'] ?>" alt="">
                                 </div>
                             </div>
                         </div>

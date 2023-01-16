@@ -181,7 +181,7 @@ if (isset($_POST['save_text'])) {
                                 </script>
                             </div>
                         </div>
-
+                        </div>
 
                         <div class="table-responsive">
                             <table class="table">

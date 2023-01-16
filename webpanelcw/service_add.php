@@ -24,9 +24,9 @@ if (isset($_POST['add-service'])) {
     $filePath1 = "upload/upload_service/" . $fileNew1;
 
     if (empty($service_name)) {
-        echo "<script>alert('Please Enter Service Name')</script>";
+        echo "<script>alert('กรุณากรอกข้อมูลบริการ')</script>";
     } else if (empty($text_content)) {
-        echo "<script>alert('Please Enter text-content')</script>";
+        echo "<script>alert('กรุณากรอกข้อมูลรายละเอียด')</script>";
     } else {
         try {
 
@@ -123,7 +123,7 @@ if (isset($_POST['add-service'])) {
                     <i class="bi bi-justify fs-3"></i>
                 </a>
             </header>
-
+       
             <div class="page-heading">
                 <h3>Service Add</h3>
             </div>
@@ -132,9 +132,16 @@ if (isset($_POST['add-service'])) {
                     <div class="card">
                         <div class="card-header">
                             <h4 class="card-title">Service</h4>
-                            <button type="submit" name="add-service" class="btn btn-edit">Save</button>
+                            <button type="submit" name="add-service" class="btn btn-save">Save</button>
                         </div>
-                        <div class="title">
+                      
+                        <div class="card-body">
+                            <div class="product-name">
+                                <h6>Service Name</h6>
+                                <input type="text" name="service_name" class="form-control">
+                            </div>
+
+                            <div class="title">
                             <!-- <h6 class="txt-cover">Cover Image</h6> -->
                             <div class="title-img">
                                 <span id="upload-img">Cover Image</span>
@@ -151,11 +158,6 @@ if (isset($_POST['add-service'])) {
                                 </div>
                             </div>
                         </div>
-                        <div class="card-body">
-                            <div class="product-name">
-                                <h6>Service Name</h6>
-                                <input type="text" name="service_name" class="form-control">
-                            </div>
 
                             <div class="content-text">
                                 <h6>Content</h6>

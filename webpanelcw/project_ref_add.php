@@ -18,6 +18,7 @@ if (isset($_POST['add-project'])) {
     $project_finish = $_POST['project_finish'];
     $product_list = $_POST['product_list'];
     $status = "on";
+    $project_ref = $_POST['ref_id'];
 
     if (empty($project_name)) {
         echo "<script>alert('Please Enter Project Name')</script>";
@@ -33,7 +34,7 @@ if (isset($_POST['add-project'])) {
         echo "<script>alert('Please Enter Product List')</script>";
     } else {
         try {
-            $project = $conn->prepare("INSERT INTO project(project_name, customer, location, project_start, project_finish, product_list ,status)
+            $project = $conn->prepare("INSERT INTO project (project_name, customer, location, project_start, project_finish, product_list ,status)
                                         VALUES(:project_name, :customer, :location, :project_start, :project_finish, :product_list ,:status)");
             $project->bindParam(":project_name", $project_name);
             $project->bindParam(":customer", $customer);
@@ -45,6 +46,14 @@ if (isset($_POST['add-project'])) {
             $project->execute();
 
             $id_project = $conn->lastInsertId();
+
+
+            $project_ref = $conn->prepare("INSERT INTO category_ref (catapro_name)
+            VALUES(:catapro_name)");
+            $project->bindParam(":catapro_name", $catapro_name);
+            
+            $project->execute();
+
 
             foreach ($_FILES['img']['tmp_name'] as $key => $value) {
                 $file_names = $_FILES['img']['name'];
@@ -132,11 +141,16 @@ if (isset($_POST['add-project'])) {
                     <div class="card">
                         <div class="card-header">
                             <h4 class="card-title">Project References</h4>
-                            <button type="submit" name="add-project" class="btn btn-edit">Save</button>
+                            <button type="submit" name="add-project" class="btn btn-save">Save</button>
                         </div>
                         <div class="card-body">
 
+                            <?php
+                            $stmt = $conn->prepare("SELECT* FROM category_ref");
+                            $stmt->execute();
+                            $category_ref = $stmt->fetchAll();
 
+                            ?>
                             <div class="content">
                                 <div class="project-name">
                                     <h6>Project Name</h6>
@@ -151,6 +165,16 @@ if (isset($_POST['add-project'])) {
                                     <input type="text" name="project_finish" class="form-control">
                                     <h6>Product List</h6>
                                     <input type="text" name="product_list" class="form-control">
+                                    <h6>Category Project References</h6>
+                                    <select name="ref_id" class="form-control" required>
+                                        <option value="">select</option>
+                                        <?php foreach ($category_ref as $category_ref) { ?>
+                                            <!--value ที่จะส่งออกไปจากฟอร์มคือ p_id ซึ่งก็คือไอดีหรือรหัสของตำแหน่งครับ  -->
+                                            <option value="<?= $category_ref['ref_id']; ?>"><?= $category_ref['catapro_name']; ?></option>
+                                        <?php } ?>
+                                    </select>
+
+
                                 </div>
                                 <div class="content-img">
                                     <span id="upload-img">Content Image</span>

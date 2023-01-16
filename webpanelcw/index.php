@@ -150,8 +150,7 @@ if (isset($_POST['save_text'])) {
                             <a href="index_cn"><button type="button" class="btn btn-edit1">CN</button></a>
                         </div>
                     </div>
-                    <div class="card-body">
-
+                    <div class="card-body" style="display: flex;">
                         <div class="box-slide-text">
                             <div class="content-text">
                                 <form method="post">
@@ -181,69 +180,70 @@ if (isset($_POST['save_text'])) {
                                 </script>
                             </div>
                         </div>
+                    </div>
 
 
-                        <div class="table-responsive">
-                            <table class="table">
-                                <thead>
-                                    <tr align="center">
-                                        <th scope="col" width="70%">Photo</th>
-                                        <th scope="col">Manage</th>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr align="center">
+                                    <th scope="col" width="70%">Photo</th>
+                                    <th scope="col">Manage</th>
+                                </tr>
+                            </thead>
+                            <?php foreach ($row_slide_img as $row_slide_img) { ?>
+
+                                <tbody>
+                                    <tr>
+                                        <td align="center"> <img src="upload/upload_slide/<?php echo $row_slide_img['img'] ?>" alt="" width="40%"></td>
+                                        <td align="center"><a type="input" data-bs-toggle="modal" class="btn btn-edit2" href="#about_us<?php echo $row_slide_img['id'] ?>"><i class="bi bi-pencil-square"></i></a></td>
                                     </tr>
-                                </thead>
-                                <?php foreach ($row_slide_img as $row_slide_img) { ?>
-
-                                    <tbody>
-                                        <tr>
-                                            <td align="center"> <img src="upload/upload_slide/<?php echo $row_slide_img['img'] ?>" alt="" width="40%"></td>
-                                            <td align="center"><a type="input" data-bs-toggle="modal" class="btn btn-edit2" href="#about_us<?php echo $row_slide_img['id'] ?>"><i class="bi bi-pencil-square"></i></a></td>
-                                        </tr>
-                                    </tbody>
-                                    <div class="modal fade" id="about_us<?php echo $row_slide_img['id'] ?>" data-bs-backdrop="static" aria-hidden="true">
-                                        <div class="modal-dialog modal-lg  modal-dialog-centered">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Edit Slide</h1>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <form method="post" enctype="multipart/form-data">
+                                </tbody>
+                                <div class="modal fade" id="about_us<?php echo $row_slide_img['id'] ?>" data-bs-backdrop="static" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg  modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="staticBackdropLabel">Edit Slide</h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form method="post" enctype="multipart/form-data">
 
 
-                                                        <div class="content d-flex justify-content-center align-item-center">
-                                                            <div class="title-img">
-                                                                <span id="upload-img">Photo</span>
-                                                                <div class="group-pos">
-                                                                    <input type="hidden" name="id" value="<?php echo $row_slide_img['id'] ?>">
-                                                                    <input type="file" name="img" id="imgInput-cover" class="form-control">
-                                                                    <!-- <button type="button" class="btn reset" id="reset1">ยกเลิก</button> -->
-                                                                </div>
-                                                                <span class="file-support">Only file support ('jpg', 'jpeg', 'png','webp').</span>
-                                                                <div id="gallery-cover">
-                                                                    <div class='box-edit-img-cover'>
-                                                                        <span class='del-edit-img'></span>
-                                                                        <img class='edit-img-cover' id='previewImg-cover' src='upload/upload_slide/<?php echo $row_slide_img['img'] ?>'>
-                                                                    </div>
+                                                    <div class="content d-flex justify-content-center align-item-center">
+                                                        <div class="title-img">
+                                                            <span id="upload-img">Photo</span>
+                                                            <div class="group-pos">
+                                                                <input type="hidden" name="id" value="<?php echo $row_slide_img['id'] ?>">
+                                                                <input type="file" name="img" id="imgInput-cover" class="form-control">
+                                                                <!-- <button type="button" class="btn reset" id="reset1">ยกเลิก</button> -->
+                                                            </div>
+                                                            <span class="file-support">Only file support ('jpg', 'jpeg', 'png','webp').</span>
+                                                            <div id="gallery-cover">
+                                                                <div class='box-edit-img-cover'>
+                                                                    <span class='del-edit-img'></span>
+                                                                    <img class='edit-img-cover' id='previewImg-cover' src='upload/upload_slide/<?php echo $row_slide_img['img'] ?>'>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="d-flex justify-content-center-align-item-center">
-                                                            <button type="submit" name="save" class="btn btn-save">Save</button>
-                                                        </div>
-                                                    </form>
-                                                </div>
+                                                    </div>
+                                                    <div class="d-flex justify-content-center-align-item-center">
+                                                        <button type="submit" name="save" class="btn btn-save">Save</button>
+                                                    </div>
+                                                </form>
                                             </div>
                                         </div>
                                     </div>
-                                <?php   } ?>
-                            </table>
-                        </div>
+                                </div>
+                            <?php   } ?>
+                        </table>
                     </div>
                 </div>
-
-            </section>
-            <?php include('footer.php'); ?>
         </div>
+
+        </section>
+        <?php include('footer.php'); ?>
+    </div>
     </div>
     <script src="assets/js/bootstrap.js"></script>
     <script src="assets/js/app.js"></script>

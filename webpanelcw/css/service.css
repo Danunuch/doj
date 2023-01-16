@@ -10,6 +10,12 @@
     background-color: #435ebe;
     color: #FFFFFF;
 }
+.btn-save {
+    width: 66px;
+    height: 35px;
+    background-color: #3c8512;
+    color: #FFFFFF;
+}
 
 .btn-del {
     width: 75px;
@@ -240,6 +246,13 @@
         text-align: end;
     }
 
+    .btn-save {
+        width: 65px;
+        height: 35px;
+        background-color: #3c8512;
+        color: #FFFFFF;
+    }
+
     .btn-edit {
         width: 49px;
         height: 35px;
@@ -256,13 +269,6 @@
 
     }
 
-    .btn-save {
-        width: 65px;
-        height: 35px;
-        background-color: #15800c;
-        color: #FFFFFF;
-
-    }
 
     .btn {
         margin: 3px;
@@ -483,17 +489,22 @@
 
 @media (min-width: 1200px) {
     .card-header {
-        display: flex;
+        display: block;
         justify-content: space-between;
         align-items: center;
         text-align: end;
     }
-    
+    .card-title {
+        display: flex;
+        text-align: start;
+    }
     .btn-save {
-        width: 70px;
+        width: 68px;
         height: 35px;
         background-color: #0e8a23;
         color: #FFFFFF;
+        align-items: flex-end;
+        margin: inherit;
     }
 
     .btn-edit {
@@ -511,9 +522,14 @@
     }
 
     .btn {
-        margin: 3px auto;
+        margin: 2px auto;
         align-items: flex-end;
     }
+    .btn1 {
+        margin: -44px auto;
+        margin-inline-end: inherit;
+    }
+
 
     .btn-del {
         width: 80px;

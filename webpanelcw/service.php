@@ -201,7 +201,7 @@ if (isset($_POST['delete_all'])) {
                                                                     <span>ON</span>
                                                                 </div>
                                                                 <div class="box-btn">
-                                                                    <button name="change-status" class="btn btn-status" type="submit">Save</button>
+                                                                    <button name="change-status" class="btn btn-save" type="submit">Save</button>
                                                                 </div>
                                                             </form>
                                                         </div>

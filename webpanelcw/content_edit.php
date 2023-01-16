@@ -4,45 +4,46 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <?php
 require_once('config/doj_db.php');
+error_reporting(0);
 session_start();
 if (!isset($_SESSION['admin_login'])) {
     echo "<script>alert('Please Login')</script>";
     echo "<meta http-equiv='refresh' content='0;url=login'>";
 }
 
+$content_img = $conn->prepare("SELECT * FROM content_img");
+$content_img->execute();
+$row_content_img = $content_img->fetchAll();
 
+$content = $conn->prepare("SELECT * FROM content");
+$content->execute();
+$row_content = $content->fetch(PDO::FETCH_ASSOC);
 
-$stmt = $conn->prepare("SELECT * FROM content");
-$stmt->execute();
-$row_content = $stmt->fetch(PDO::FETCH_ASSOC);
+if (isset($_GET['content_id'])) {
+    $content_id = $_GET['content_id'];
 
-$img = $conn->prepare("SELECT * FROM content_img");
-$img->execute();
-$row_img = $img->fetchAll();
+    $stmt = $conn->prepare("SELECT * FROM content WHERE content_id = :content_id");
+    $stmt->bindParam(":content_id", $content_id);
+    $stmt->execute();
+    $row_content = $stmt->fetch(PDO::FETCH_ASSOC);
 
-
-
-if (isset($_POST['del-img'])) {
-    $img_id = $_POST['del-img'];
-
-    $delete_img = $conn->prepare("DELETE FROM content_img WHERE id = :id");
-    $delete_img->bindParam(":id", $img_id);
-    $delete_img->execute();
-
-    if ($delete_img) {
-        echo "<meta http-equiv='refresh' content='0;url=content_edit?id=$id'>";
-    }
+    $img = $conn->prepare("SELECT * FROM content_img WHERE content_id = :content_id");
+    $img->bindParam(":content_id", $content_id);
+    $img->execute();
+    $row_img = $img->fetchAll();
 }
 
 if (isset($_POST['edit-content'])) {
     $content1 = $_POST['content1'];
     $content2 = $_POST['content2'];
 
-    $stmt_con = $conn->prepare("UPDATE content SET content1 = :content1, content2 = :content2 WHERE id = :id");
-    $stmt_con->bindParam(":content1", $content1);
-    $stmt_con->bindParam(":content2", $content2);
-    $stmt_con->bindParam(":id", $id);
-    $stmt_con->execute();
+    $text = $conn->prepare("UPDATE content SET content1 = :content1, content2 = :content2");
+    $text->bindParam(":content1", $content1);
+    $text->bindParam(":content2", $content2);
+    $text->execute();
+
+
+   
 
     foreach ($_FILES['img']['tmp_name'] as $key => $value) {
         $file_names = $_FILES['img']['name'];
@@ -55,44 +56,50 @@ if (isset($_POST['edit-content'])) {
                 $upload_img = $conn->prepare($sql);
                 $params = array(
                     'img' => $new_name,
-                    'id' => $id
+                    'id' => $content_id
                 );
                 $upload_img->execute($params);
             }
         }
     }
-}
+    if ($text) {
+        echo "<script>
+                    $(document).ready(function() {
+                        Swal.fire({
+                            text: 'Edit Success',
+                            icon: 'success',
+                            timer: 5000,
+                            showConfirmButton: false
+                        });
+                    })
+                    </script>";
+        echo "<meta http-equiv='refresh' content='1.5;url=content'>";
+    } else {
+        echo "<script>
+                    $(document).ready(function() {
+                        Swal.fire({
+                            text: 'Something Went Wrong',
+                            icon: 'error',
+                            timer: 5000,
+                            showConfirmButton: false
+                        });
+                    })
+                    </script>";
+        echo "<meta http-equiv='refresh' content='1.5;url=content'>";
+    }
+} if (isset($_POST['del-img'])) {
+    $content_id = $_POST['del-img'];
+
+        $delete_img = $conn->prepare("DELETE FROM content_img WHERE id = :id");
+        $delete_img->bindParam(":id", $content_id);
+        $delete_img->execute();
+
+        if ($delete_img) {
+            echo "<meta http-equiv='refresh' content='0;url=content_edit?id=$content_id'>";
+        }
+    }
 
 
-
-
-
-//     if ($stmt_con) {
-//         echo "<script>
-//                 $(document).ready(function() {
-//                     Swal.fire({
-//                         text: 'Edit Content has been completed.',
-//                         icon: 'success',
-//                         timer: 10000,
-//                         showConfirmButton: false
-//                     });
-//                 })
-//                 </script>";
-//         echo "<meta http-equiv='refresh' content='2;url=content'>";
-//     } else {
-//         echo "<script>
-//                 $(document).ready(function() {
-//                     Swal.fire({
-//                         text: 'Something Went Wrong!!!',
-//                         icon: 'error',
-//                         timer: 10000,
-//                         showConfirmButton: false
-//                     });
-//                 })
-//                 </script>";
-//     }
-
-// 
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -144,10 +151,10 @@ if (isset($_POST['edit-content'])) {
                                     <span class="file-support">Only file are support ('jpg', 'jpeg', 'png', 'webp').</span>
                                     <div id="gallery">
                                         <?php
-                                        foreach ($row_img as $row_img) { ?>
+                                        foreach ($row_content_img as $row_content_img) { ?>
                                             <div class="box-edit-img">
-                                                <span class="del-edit-img"><button type="submit" onclick="return confirm('Do you want to delete this image?')" name="del-img" value="<?php echo $row_img['id'] ?>" class="btn-edit-del-img"><i class="bi bi-x-lg"></button></i></span>
-                                                <img class='previewImg' id='edit-img' src="upload/upload_content/<?php echo $row_img['img'] ?>" alt="">
+                                                <span class="del-edit-img"><button type="submit" onclick="return confirm('Do you want to delete this image?')" name="del-img" value="<?php echo $row_content_img['id'] ?>" class="btn-edit-del-img"><i class="bi bi-x-lg"></button></i></span>
+                                                <img class='previewImg' id='edit-img' src="upload/upload_content/<?php echo $row_content_img['img'] ?>" alt="">
                                             </div>
                                         <?php  }
                                         ?>
