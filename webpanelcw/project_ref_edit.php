@@ -43,9 +43,15 @@ if (isset($_POST['edit-project'])) {
     $project_start = $_POST['project_start'];
     $project_finish = $_POST['project_finish'];
     $product_list = $_POST['product_list'];
+    $ref_id = $_POST['ref_name'];
+
+    $select_ref = $conn->prepare("SELECT * FROM category_ref WHERE ref_name= :ref_name");
+    $select_ref->bindParam(':ref_name', $ref_id);
+    $select_ref->execute();
+    $query =  $select_ref->fetch(PDO::FETCH_ASSOC);
 
     $project = $conn->prepare("UPDATE project SET project_name = :project_name, customer = :customer, location = :location, project_start = :project_start,
-                                 project_finish = :project_finish, product_list = :product_list WHERE project_id = :project_id");
+                                 project_finish = :project_finish, product_list = :product_list, ref_id = :ref_id WHERE project_id = :project_id");
     $project->bindParam(":project_name", $project_name);
     $project->bindParam(":customer", $customer);
     $project->bindParam(":location", $location);
@@ -53,6 +59,7 @@ if (isset($_POST['edit-project'])) {
     $project->bindParam(":project_finish", $project_finish);
     $project->bindParam(":product_list", $product_list);
     $project->bindParam(":project_id", $project_id);
+    $project->bindParam(":ref_id", $query['ref_id']);
     $project->execute();
 
 
@@ -118,6 +125,7 @@ if (isset($_POST['edit-project'])) {
 
 </head>
 
+
 <body>
     <div id="app">
         <?php include('sidebar.php'); ?>
@@ -140,7 +148,14 @@ if (isset($_POST['edit-project'])) {
                         </div>
                         <div class="card-body">
 
+                            <?php
 
+                            $select_ref = $conn->prepare("SELECT * FROM category_ref WHERE ref_id = :ref_id");
+                            $select_ref->bindParam(':ref_id', $row_project['ref_id']);
+                            $select_ref->execute();
+                            $query =  $select_ref->fetch(PDO::FETCH_ASSOC);
+
+                            ?>
                             <div class="content">
                                 <div class="project-name">
                                     <h6>Project Name</h6>
@@ -155,6 +170,9 @@ if (isset($_POST['edit-project'])) {
                                     <input type="text" name="project_finish" value="<?php echo $row_project['project_finish'] ?>" class="form-control">
                                     <h6>Product List</h6>
                                     <input type="text" name="product_list" value="<?php echo $row_project['product_list'] ?>" class="form-control">
+                                    <h6 for="ref_name" class="col-form-label">Category Project References</h6>
+                                    <input type="text" name="ref_name" value="<?php echo $query['ref_name'] ?>" class="form-control">
+                                    
                                 </div>
                                 <div class="content-img">
                                     <span id="upload-img">Content Image</span>

@@ -140,6 +140,7 @@ if (isset($_POST['save'])) {
                             <script>
                                 tinymce.init({
                                     selector: 'textarea',
+                                    branding:false,
                                     plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
                                     toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
                                     tinycomments_mode: 'embedded',
@@ -166,7 +167,7 @@ if (isset($_POST['save'])) {
                                 </div>
                                 <span style="color: #ff4122;">Only file are support ('jpg', 'jpeg', 'png', 'webp').</span>
                                 <div class="preview-img">
-                                    <img id="previewImg" width="100%" style="display: flex;" src="upload/upload_about_us/<?php echo $row['img'] ?>" alt="">
+                                    <img id="previewImg" width="30%" style="display: flex;" src="upload/upload_about_us/<?php echo $row['img'] ?>" alt="">
                                 </div>
                             </div>
                         </div>

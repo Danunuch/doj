@@ -165,6 +165,7 @@ if (isset($_POST['edit-content'])) {
                                     <script>
                                         tinymce.init({
                                             selector: 'textarea',
+                                            branding:false,
                                             height: "400",
                                             plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
                                             toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
@@ -191,6 +192,7 @@ if (isset($_POST['edit-content'])) {
                             <script>
                                 tinymce.init({
                                     selector: 'textarea',
+                                    branding:false,
                                     height: "300",
                                     plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
                                     toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',

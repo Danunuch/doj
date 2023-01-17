@@ -55,11 +55,10 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
                     </div>
                     <div class="card-body">
                         <?php echo $row['content']; ?>
-
                     </div>
                     <div class="card-body">
                         <div class="pre-img">
-                            <img width="100%" src="upload/upload_about_us/<?php echo $row['img']; ?>" alt="">
+                            <img width="100%"  src="upload/upload_about_us/<?php echo $row['img']; ?>" alt="">
                         </div>
                     </div>
                 </div>

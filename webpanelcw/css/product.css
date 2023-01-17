@@ -28,7 +28,7 @@
     color: #FFFFFF;
 }
 .btn {
-    margin:3px;
+    margin:0px;
 }
 .btn-del {
     width: 70px;
@@ -308,6 +308,10 @@ textarea {
         justify-content: space-between;
         
 
+    }
+
+    .btn {
+        margin:2px;
     }
     .btn-save {
         width: 62px;
@@ -614,7 +618,9 @@ textarea {
         background-color: #435ebe;
         color: #FFFFFF;
     }
-    
+    .btn {
+        margin:0px;
+    }
     
     .btn-del {
         width: 74px;

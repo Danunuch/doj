@@ -15,7 +15,7 @@ if (isset($_GET['project_id'])) {
     $project_data = $conn->prepare("SELECT * FROM project_cn WHERE project_id = :project_id");
     $project_data->bindParam(":project_id", $project_id);
     $project_data->execute();
-    $row_project_cn = $project_data->fetch(PDO::FETCH_ASSOC);
+    $row_project = $project_data->fetch(PDO::FETCH_ASSOC);
 
     $project_img = $conn->prepare("SELECT * FROM project_img WHERE project_id = :project_id");
     $project_img->bindParam(":project_id", $project_id);
@@ -43,9 +43,15 @@ if (isset($_POST['edit-project'])) {
     $project_start = $_POST['project_start'];
     $project_finish = $_POST['project_finish'];
     $product_list = $_POST['product_list'];
+    $ref_id = $_POST['ref_name'];
+
+    $select_ref = $conn->prepare("SELECT * FROM category_ref_cn WHERE ref_name= :ref_name");
+    $select_ref->bindParam(':ref_name', $ref_id);
+    $select_ref->execute();
+    $query =  $select_ref->fetch(PDO::FETCH_ASSOC);
 
     $project = $conn->prepare("UPDATE project_cn SET project_name = :project_name, customer = :customer, location = :location, project_start = :project_start,
-                                 project_finish = :project_finish, product_list = :product_list WHERE project_id = :project_id");
+                                 project_finish = :project_finish, product_list = :product_list, ref_id = :ref_id WHERE project_id = :project_id");
     $project->bindParam(":project_name", $project_name);
     $project->bindParam(":customer", $customer);
     $project->bindParam(":location", $location);
@@ -53,6 +59,7 @@ if (isset($_POST['edit-project'])) {
     $project->bindParam(":project_finish", $project_finish);
     $project->bindParam(":product_list", $product_list);
     $project->bindParam(":project_id", $project_id);
+    $project->bindParam(":ref_id", $query['ref_id']);
     $project->execute();
 
 
@@ -118,6 +125,7 @@ if (isset($_POST['edit-project'])) {
 
 </head>
 
+
 <body>
     <div id="app">
         <?php include('sidebar.php'); ?>
@@ -139,20 +147,32 @@ if (isset($_POST['edit-project'])) {
                             <button type="submit" name="edit-project" class="btn btn-save">Save</button>
                         </div>
                         <div class="card-body">
+
+                            <?php
+
+                            $select_ref = $conn->prepare("SELECT * FROM category_ref_cn WHERE ref_id = :ref_id");
+                            $select_ref->bindParam(':ref_id', $row_project['ref_id']);
+                            $select_ref->execute();
+                            $query =  $select_ref->fetch(PDO::FETCH_ASSOC);
+
+                            ?>
                             <div class="content">
                                 <div class="project-name">
                                     <h6>Project Name</h6>
-                                    <input type="text" name="project_name" value="<?php echo $row_project_cn['project_name'] ?>" class="form-control">
+                                    <input type="text" name="project_name" value="<?php echo $row_project['project_name'] ?>" class="form-control">
                                     <h6>Customer</h6>
-                                    <input type="text" name="customer" value="<?php echo $row_project_cn['customer'] ?>" class="form-control">
+                                    <input type="text" name="customer" value="<?php echo $row_project['customer'] ?>" class="form-control">
                                     <h6>Location</h6>
-                                    <input type="text" name="location" value="<?php echo $row_project_cn['location'] ?>" class="form-control">
+                                    <input type="text" name="location" value="<?php echo $row_project['location'] ?>" class="form-control">
                                     <h6>Project Start</h6>
-                                    <input type="text" name="project_start" value="<?php echo $row_project_cn['project_start'] ?>" class="form-control">
+                                    <input type="text" name="project_start" value="<?php echo $row_project['project_start'] ?>" class="form-control">
                                     <h6>Project Finish</h6>
-                                    <input type="text" name="project_finish" value="<?php echo $row_project_cn['project_finish'] ?>" class="form-control">
+                                    <input type="text" name="project_finish" value="<?php echo $row_project['project_finish'] ?>" class="form-control">
                                     <h6>Product List</h6>
-                                    <input type="text" name="product_list" value="<?php echo $row_project_cn['product_list'] ?>" class="form-control">
+                                    <input type="text" name="product_list" value="<?php echo $row_project['product_list'] ?>" class="form-control">
+                                    <h6 for="ref_name" class="col-form-label">Category Project References</h6>
+                                    <input type="text" name="ref_name" value="<?php echo $query['ref_name'] ?>" class="form-control">
+                                    
                                 </div>
                                 <div class="content-img">
                                     <span id="upload-img">Content Image</span>

@@ -18,7 +18,7 @@ if (isset($_POST['add-project'])) {
     $project_finish = $_POST['project_finish'];
     $product_list = $_POST['product_list'];
     $status = "on";
-    $project_ref = $_POST['ref_id'];
+    $ref_id = $_POST['ref_name'];
 
     if (empty($project_name)) {
         echo "<script>alert('Please Enter Project Name')</script>";
@@ -34,8 +34,8 @@ if (isset($_POST['add-project'])) {
         echo "<script>alert('Please Enter Product List')</script>";
     } else {
         try {
-            $project = $conn->prepare("INSERT INTO project (project_name, customer, location, project_start, project_finish, product_list ,status)
-                                        VALUES(:project_name, :customer, :location, :project_start, :project_finish, :product_list ,:status)");
+            $project = $conn->prepare("INSERT INTO project (project_name, customer, location, project_start, project_finish, product_list ,status , ref_id)
+                                        VALUES(:project_name, :customer, :location, :project_start, :project_finish, :product_list ,:status, :ref_id )");
             $project->bindParam(":project_name", $project_name);
             $project->bindParam(":customer", $customer);
             $project->bindParam(":location", $location);
@@ -43,16 +43,12 @@ if (isset($_POST['add-project'])) {
             $project->bindParam(":project_finish", $project_finish);
             $project->bindParam(":product_list", $product_list);
             $project->bindParam(":status", $status);
+            $project->bindParam(":ref_id", $ref_id);
             $project->execute();
 
             $id_project = $conn->lastInsertId();
 
 
-            $project_ref = $conn->prepare("INSERT INTO category_ref (catapro_name)
-            VALUES(:catapro_name)");
-            $project->bindParam(":catapro_name", $catapro_name);
-            
-            $project->execute();
 
 
             foreach ($_FILES['img']['tmp_name'] as $key => $value) {
@@ -122,6 +118,13 @@ if (isset($_POST['add-project'])) {
     <link rel="stylesheet" href="assets/css/shared/iconly.css">
 
 </head>
+<?php
+
+$select_stmt = $conn->prepare("SELECT * FROM category_ref");
+$select_stmt->execute();
+$query =  $select_stmt->fetchAll();
+
+?>
 
 <body>
     <div id="app">
@@ -165,14 +168,14 @@ if (isset($_POST['add-project'])) {
                                     <input type="text" name="project_finish" class="form-control">
                                     <h6>Product List</h6>
                                     <input type="text" name="product_list" class="form-control">
-                                    <h6>Category Project References</h6>
-                                    <select name="ref_id" class="form-control" required>
-                                        <option value="">select</option>
-                                        <?php foreach ($category_ref as $category_ref) { ?>
-                                            <!--value ที่จะส่งออกไปจากฟอร์มคือ p_id ซึ่งก็คือไอดีหรือรหัสของตำแหน่งครับ  -->
-                                            <option value="<?= $category_ref['ref_id']; ?>"><?= $category_ref['catapro_name']; ?></option>
+                                    <h6 for="ref_name" class="col-form-label">Category Project References</h6>
+                                    <select class="form-control" name="ref_name" id="">
+                                        <option value="" selected disabled>Select</option>
+                                        <?php foreach ($query as $value) { ?>
+                                            <option value="<?= $value['ref_id'] ?>"><?= $value['ref_name'] ?></option>
                                         <?php } ?>
                                     </select>
+
 
 
                                 </div>

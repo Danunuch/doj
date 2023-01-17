@@ -44,7 +44,7 @@ if (isset($_POST['save'])) {
                         });
                     })
                     </script>";
-                    echo "<meta http-equiv='refresh' content='2;url=about_us_en_edit'>";
+                    echo "<meta http-equiv='refresh' content='2;url=about_us_en'>";
                 } else {
                     echo "<script>
                     $(document).ready(function() {
@@ -75,7 +75,7 @@ if (isset($_POST['save'])) {
                 });
             })
             </script>";
-            echo "<meta http-equiv='refresh' content='2;url=about_us_en_edit'>";
+            echo "<meta http-equiv='refresh' content='2;url=about_us_en'>";
         } else {
             echo "<script>
             $(document).ready(function() {
@@ -129,15 +129,18 @@ if (isset($_POST['save'])) {
                 <form method="post" enctype="multipart/form-data">
                     <div class="card">
                         <div class="card-header">
+                            <div class="flex-end"></div>
                             <h4 class="card-title"></h4>
+                            
                             <button type="submit" name="save" class="btn btn-save1">Save</button>
                         </div>
-                        <div class="card-body">
+                        <div class="card-body" style="display: flex;">
                             <h5>Content</h5>
                             <textarea name="content"><?php echo $row['content']; ?></textarea>
                             <script>
                                 tinymce.init({
                                     selector: 'textarea',
+                                    branding:false,
                                     plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
                                     toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
                                     tinycomments_mode: 'embedded',
@@ -154,7 +157,7 @@ if (isset($_POST['save'])) {
                                 });
                             </script>
                         </div>
-                        <div class="card-body">
+                        <div class="card-body"  style="display: flex;" >
                             <!-- <h5>Image</h5> -->
                             <div class="box-upload-img">
                                 <h5>Upload Image here</h5>
@@ -164,7 +167,7 @@ if (isset($_POST['save'])) {
                                 </div>
                                 <span style="color: #ff4122;">Only file are support ('jpg', 'jpeg', 'png', 'webp').</span>
                                 <div class="preview-img">
-                                    <img id="previewImg" width="100%" src="upload/upload_about_us/<?php echo $row['img'] ?>" alt="">
+                                    <img id="previewImg" width="30%" style="display: flex;" src="upload/upload_about_us/<?php echo $row['img'] ?>" alt="">
                                 </div>
                             </div>
                         </div>

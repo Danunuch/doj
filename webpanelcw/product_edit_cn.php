@@ -16,7 +16,7 @@ if (isset($_GET['product_id'])) {
     $stmt = $conn->prepare("SELECT * FROM product_cn WHERE product_id = :product_id");
     $stmt->bindParam(":product_id", $product_id);
     $stmt->execute();
-    $row_product_cn = $stmt->fetch(PDO::FETCH_ASSOC);
+    $row_product = $stmt->fetch(PDO::FETCH_ASSOC);
 
     $img = $conn->prepare("SELECT * FROM product_img WHERE product_id = :product_id");
     $img->bindParam(":product_id", $product_id);
@@ -32,6 +32,7 @@ if (isset($_POST['del-img'])) {
     $delete_img->bindParam(":id", $img_id);
     $delete_img->execute();
 
+
     if ($delete_img) {
         echo "<meta http-equiv='refresh' content='0;url=product_edit_cn?product_id=$product_id'>";
     }
@@ -44,6 +45,20 @@ if (isset($_POST['edit-product'])) {
     $conclude = $_POST['conclude'];
     $img_cover = $_FILES['img-cover'];
     $link = $_POST['link'];
+    $pt_id = $_POST['type_name'];
+    $id = $_POST['sub_name'];
+
+    $select_type = $conn->prepare("SELECT * FROM category_product_cn WHERE type_name= :type_name");
+    $select_type->bindParam(':type_name', $pt_id);
+    $select_type->execute();
+    $query =  $select_type->fetch(PDO::FETCH_ASSOC);
+
+
+    $select_sub = $conn->prepare("SELECT * FROM category_sub_cn WHERE sub_name= :sub_name");
+    $select_sub->bindParam(':sub_name', $id);
+    $select_sub->execute();
+    $query_sub =  $select_sub->fetch(PDO::FETCH_ASSOC);
+
 
     $allow = array('jpg', 'jpeg', 'png', 'webp');
     $extention1 = explode(".", $img_cover['name']); //เเยกชื่อกับนามสกุลไฟล์
@@ -55,7 +70,7 @@ if (isset($_POST['edit-product'])) {
         if ($img_cover['size'] > 0 && $img_cover['error'] == 0) {
             if (move_uploaded_file($img_cover['tmp_name'], $filePath1)) {
                 $product = $conn->prepare("UPDATE product_cn SET product_name = :product_name, intro = :intro, 
-                content = :content, conclude = :conclude, link_video = :link_video , cover_img = :cover_img WHERE product_id = :product_id");
+                content = :content, conclude = :conclude, link_video = :link_video , cover_img = :cover_img, pt_id = :pt_id, id = :id WHERE product_id = :product_id");
                 $product->bindParam(":product_name", $product_name);
                 $product->bindParam(":intro", $intro);
                 $product->bindParam(":content", $content);
@@ -63,18 +78,22 @@ if (isset($_POST['edit-product'])) {
                 $product->bindParam(":link_video", $link);
                 $product->bindParam(":cover_img", $fileNew1);
                 $product->bindParam(":product_id", $product_id);
+                $product->bindParam(":pt_id", $query['pt_id']);
+                $product->bindParam(":id", $query_sub['id']);
                 $product->execute();
             }
         }
     } else {
         $product = $conn->prepare("UPDATE product_cn SET product_name = :product_name, intro = :intro, 
-        content = :content, conclude = :conclude, link_video = :link_video WHERE product_id = :product_id");
+        content = :content, conclude = :conclude, link_video = :link_video, pt_id = :pt_id, id = :id WHERE product_id = :product_id");
         $product->bindParam(":product_name", $product_name);
         $product->bindParam(":intro", $intro);
         $product->bindParam(":content", $content);
         $product->bindParam(":conclude", $conclude);
         $product->bindParam(":link_video", $link);
         $product->bindParam(":product_id", $product_id);
+        $product->bindParam(":pt_id", $query['pt_id']);
+        $product->bindParam(":id", $query_sub['id']);
         $product->execute();
     }
 
@@ -166,12 +185,30 @@ if (isset($_POST['edit-product'])) {
                             <button type="submit" name="edit-product" class="btn btn-save">Save</button>
                         </div>
                         <div class="card-body">
+                            <?php
 
+                            $select_pro = $conn->prepare("SELECT * FROM category_product_cn WHERE pt_id = :pt_id");
+                            $select_pro->bindParam(':pt_id', $row_product['pt_id']);
+                            $select_pro->execute();
+                            $query =  $select_pro->fetch(PDO::FETCH_ASSOC);
+
+
+                            $select_sub_cat = $conn->prepare("SELECT * FROM category_sub_cn WHERE id = :id");
+                            $select_sub_cat->bindParam(':id', $row_product['id']);
+                            $select_sub_cat->execute();
+                            $query_sub_cat =  $select_sub_cat->fetch(PDO::FETCH_ASSOC);
+
+                            ?>
                             <div class="product-name">
                                 <h6>Product Name</h6>
-                                <input type="text" name="product_name" value="<?php echo $row_product_cn['product_name'] ?>" class="form-control">
+                                <input type="text" name="product_name" value="<?php echo $row_product['product_name'] ?>" class="form-control">
                                 <h6>Introduction</h6>
-                                <input type="text" name="intro" value="<?php echo $row_product_cn['intro'] ?>" class="form-control">
+                                <input type="text" name="intro" value="<?php echo $row_product['intro'] ?>" class="form-control">
+                                <h6 for="type_name" class="col-form-label">Category Product</h6>
+                                <input type="text" name="type_name" value="<?php echo $query['type_name'] ?>" class="form-control">
+                                <h6 for="sub_name" class="col-form-label">Sup Category</h6>
+                                <input type="text" name="sub_name" value="<?php echo $query_sub_cat['sub_name'] ?>" class="form-control">
+                            
                             </div>
                             <div class="title">
                                 <div class="title-img">
@@ -184,7 +221,7 @@ if (isset($_POST['edit-product'])) {
                                     <div id="gallery-cover">
                                         <div class='box-edit-img-cover'>
                                             <span class='del-edit-img'></span>
-                                            <img class='edit-img-cover' id='previewImg-cover' src='upload/upload_product/<?php echo $row_product_cn['cover_img'] ?>'>
+                                            <img class='edit-img-cover' id='previewImg-cover' src='upload/upload_product/<?php echo $row_product['cover_img'] ?>'>
                                         </div>
                                     </div>
                                 </div>
@@ -208,11 +245,12 @@ if (isset($_POST['edit-product'])) {
                                     </div>
                                 </div>
                                 <div class="content-text">
-                                    <textarea name="content"><?php echo $row_product_cn['content'] ?></textarea>
+                                    <textarea name="content"><?php echo $row_product['content'] ?></textarea>
                                     <script>
                                         tinymce.init({
                                             selector: 'textarea',
                                             height: "400",
+                                            branding:false,
                                             plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
                                             toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
                                             tinycomments_mode: 'embedded',
@@ -234,11 +272,12 @@ if (isset($_POST['edit-product'])) {
 
                         <div class="conclude">
                             <h6>Conclusion</h6>
-                            <textarea name="conclude"><?php echo $row_product_cn['conclude'] ?></textarea>
+                            <textarea name="conclude"><?php echo $row_product['conclude'] ?></textarea>
                             <script>
                                 tinymce.init({
                                     selector: 'textarea',
                                     height: "300",
+                                    branding:false,
                                     plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
                                     toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
                                     tinycomments_mode: 'embedded',
@@ -259,7 +298,7 @@ if (isset($_POST['edit-product'])) {
                         <div class="clip">
                             <div class="box-clip">
                                 <h6>Link Video</h6>
-                                <input type="text" name="link" value="<?php echo $row_product_cn['link_video'] ?>" class="form-control">
+                                <input type="text" name="link" value="<?php echo $row_product['link_video'] ?>" class="form-control">
                             </div>
                         </div>
 
@@ -284,7 +323,7 @@ if (isset($_POST['edit-product'])) {
             }
         }
     </script>
-        <script>
+    <script>
         let imgInput = document.getElementById('imgInput-cover');
         let previewImg = document.getElementById('previewImg-cover');
 

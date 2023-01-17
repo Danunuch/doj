@@ -60,10 +60,25 @@
                         <span>Services</span>
                     </a>
                 </li>
+
+                <li class="sidebar-item  service ">
+                    <a href="type_project" class='sidebar-link'>
+                    <i class="bi bi-list-ul"></i>
+                        <span>Type Project</span>
+                    </a>
+                </li>
+
                 <li class="sidebar-item  ">
                     <a href="project_ref" class='sidebar-link'>
                     <i class="bi bi-collection"></i>
                         <span>Project References</span>
+                    </a>
+                </li>
+
+                <li class="sidebar-item  service ">
+                    <a href="type_product" class='sidebar-link'>
+                    <i class="bi bi-list-ul"></i>
+                        <span>Type Product</span>
                     </a>
                 </li>
                 <li class="sidebar-item  ">
@@ -101,7 +116,7 @@
                         </li>
                     </ul>
                 </li> -->
-                <li class="sidebar-item  ">
+                <li class="sidebar-item "onclick="return confirm('Do you want to log out?'); ">
                     <a href="logout.php" class='sidebar-link'>
                     <i class="bi bi-box-arrow-left"></i>
                         <span>Logout</span>

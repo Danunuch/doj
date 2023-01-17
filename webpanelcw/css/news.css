@@ -23,8 +23,8 @@
     color: #FFFFFF;
 }
 .btn {
-        margin: 0px auto;
-        margin-right: -13px ;
+        margin: 5px auto;
+        margin-right: 3px ;
     }
 
 .btn-del {
@@ -246,8 +246,8 @@
         
     }
     .btn {
-        margin: 10px auto;
-        margin-right: -13px ;
+        margin: 5px auto;
+        margin-right: 3px ;
     }
     .card-title {
         display: flex;
@@ -509,6 +509,10 @@
         height: 35px;
         background-color: #435ebe;
         color: #FFFFFF;
+    }
+    .btn {
+        margin: 10px auto;
+        margin-right: 3px ;
     }
     .btn-save {
         width: 70px;

@@ -44,7 +44,7 @@ if (isset($_POST['save'])) {
                         });
                     })
                     </script>";
-                    echo "<meta http-equiv='refresh' content='2;url=about_us_cn_edit'>";
+                    echo "<meta http-equiv='refresh' content='2;url=about_us_cn'>";
                 } else {
                     echo "<script>
                     $(document).ready(function() {
@@ -75,7 +75,7 @@ if (isset($_POST['save'])) {
                 });
             })
             </script>";
-            echo "<meta http-equiv='refresh' content='2;url=about_us_cn_edit'>";
+            echo "<meta http-equiv='refresh' content='2;url=about_us_cn'>";
         } else {
             echo "<script>
             $(document).ready(function() {
@@ -101,7 +101,7 @@ if (isset($_POST['save'])) {
     <title>Dashboard - Mazer Admin Dashboard</title>
 
     <link rel="stylesheet" href="assets/css/main/app.css">
-    <link rel="stylesheet" href="css/about_us.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="css/about_us.css?v=<?php echo time();?>">
     <link rel="stylesheet" href="assets/css/main/app-dark.css">
     <!-- <link rel="shortcut icon" href="assets/images/logo/favicon.svg" type="image/x-icon"> -->
     <link rel="shortcut icon" href="image/logodoj.png" type="image/png">
@@ -109,7 +109,7 @@ if (isset($_POST['save'])) {
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/shared/iconly.css">
-
+  
 </head>
 
 <body>
@@ -129,22 +129,18 @@ if (isset($_POST['save'])) {
                 <form method="post" enctype="multipart/form-data">
                     <div class="card">
                         <div class="card-header">
+                            <div class="flex-end"></div>
                             <h4 class="card-title"></h4>
+                            
                             <button type="submit" name="save" class="btn btn-save1">Save</button>
                         </div>
-                        <div class="card-body">
+                        <div class="card-body" style="display: flex;">
                             <h5>Content</h5>
                             <textarea name="content"><?php echo $row['content']; ?></textarea>
                             <script>
                                 tinymce.init({
                                     selector: 'textarea',
-                                    // file_picker_callback: function(callback, value, meta) {
-                                    //     if (meta.filetype == 'image') {
-                                    //         callback('myimage.jpg', {
-                                    //             alt: 'My alt text'
-                                    //         });
-                                    //     }
-                                    // },
+                                    branding:false,
                                     plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
                                     toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
                                     tinycomments_mode: 'embedded',
@@ -161,7 +157,7 @@ if (isset($_POST['save'])) {
                                 });
                             </script>
                         </div>
-                        <div class="card-body">
+                        <div class="card-body"  style="display: flex;" >
                             <!-- <h5>Image</h5> -->
                             <div class="box-upload-img">
                                 <h5>Upload Image here</h5>
@@ -171,7 +167,7 @@ if (isset($_POST['save'])) {
                                 </div>
                                 <span style="color: #ff4122;">Only file are support ('jpg', 'jpeg', 'png', 'webp').</span>
                                 <div class="preview-img">
-                                    <img id="previewImg" width="100%" src="upload/upload_about_us/<?php echo $row['img'] ?>" alt="">
+                                    <img id="previewImg" width="30%" style="display: flex;" src="upload/upload_about_us/<?php echo $row['img'] ?>" alt="">
                                 </div>
                             </div>
                         </div>
