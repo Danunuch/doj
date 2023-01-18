@@ -60,7 +60,7 @@ $row_content_img = $stmt_img->fetchAll();
                             <a href="content_edit_cn"><button type="button" class="btn btn-edit1">Edit</button></a>
                         </div>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body" style="display: flex;">
                         <?php echo $row_content['content1']; ?>
                     </div>
                     <div class="card-body">

@@ -13,7 +13,7 @@ if (!isset($_SESSION['admin_login'])) {
 if (isset($_GET['service_id'])) {
     $service_id = $_GET['service_id'];
 
-    $stmt = $conn->prepare("SELECT * FROM service WHERE service_id = :service_id");
+    $stmt = $conn->prepare("SELECT * FROM service_th WHERE service_id = :service_id");
     $stmt->bindParam(":service_id", $service_id);
     $stmt->execute();
     $row_service = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -53,7 +53,7 @@ if (isset($_POST['edit-service'])) {
     if (in_array($fileActExt1, $allow)) {
         if ($img_cover['size'] > 0 && $img_cover['error'] == 0) {
             if (move_uploaded_file($img_cover['tmp_name'], $filePath1)) {
-                $service = $conn->prepare("UPDATE service SET service_name = :service_name ,content = :content, 
+                $service = $conn->prepare("UPDATE service_th SET service_name = :service_name ,content = :content, 
                                         cover_img = :cover_img WHERE service_id = :service_id");
                 $service->bindParam(":service_name", $service_name);
                 $service->bindParam(":content", $text_content);
@@ -63,7 +63,7 @@ if (isset($_POST['edit-service'])) {
             }
         }
     } else {
-        $service = $conn->prepare("UPDATE service SET service_name = :service_name ,content = :content WHERE service_id = :service_id");
+        $service = $conn->prepare("UPDATE service_th SET service_name = :service_name ,content = :content WHERE service_id = :service_id");
         $service->bindParam(":service_name", $service_name);
         $service->bindParam(":content", $text_content);
         $service->bindParam(":service_id", $service_id);

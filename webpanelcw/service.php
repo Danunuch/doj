@@ -10,7 +10,7 @@ if (!isset($_SESSION['admin_login'])) {
 }
 
 
-$data_service = $conn->prepare("SELECT * FROM service ORDER BY service_id DESC");
+$data_service = $conn->prepare("SELECT * FROM service_th ORDER BY service_id DESC");
 $data_service->execute();
 $row_service = $data_service->fetchAll();
 
@@ -18,7 +18,7 @@ if (isset($_POST['change-status'])) {
     $check = $_POST['check'];
     $service_id = $_POST['service_id'];
 
-    $stmt = $conn->prepare("UPDATE service SET status = :status WHERE service_id =  :service_id");
+    $stmt = $conn->prepare("UPDATE service_th SET status = :status WHERE service_id =  :service_id");
     $stmt->bindParam(":status", $check);
     $stmt->bindParam(":service_id", $service_id);
     $stmt->execute();
@@ -45,7 +45,7 @@ if (isset($_POST['change-status'])) {
 if (isset($_POST['delete_all'])) {
     if (count((array)$_POST['ids']) > 0) {
         $all = implode(",", $_POST['ids']);
-        $del_service = $conn->prepare("DELETE FROM service WHERE service_id in ($all)");
+        $del_service = $conn->prepare("DELETE FROM service_th WHERE service_id in ($all)");
         $del_service->execute();
 
         if ($del_service) {

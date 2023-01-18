@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" class="desktop">
 <head>
-
-  <link rel="shortcut icon" href="images/favicon.ico">
+<!-- 
+  <link rel="shortcut icon" href="images/favicon.ico"> -->
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=0.85">
@@ -12,7 +12,7 @@
 
   <title>DOJ INDUSTRIAL (ดอจ อุตสาหการ)</title>
 
-
+	<link rel="shortcut icon" href="images/logo.png" type="image/png">
 
   <link href="css/spinner.css" rel="stylesheet">
   <link href="css/bootstrap.min.css" rel="stylesheet">

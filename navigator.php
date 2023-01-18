@@ -1,7 +1,16 @@
+<?php
+require_once('webpanelcw/config/doj_db.php');
+error_reporting(0);
+$page = $_GET['page'];
+
+if($page == ""){
+	$page = 1;
+}
+?>
 <div class="bg-navigator">
 	<div class="container-xxl">
-		<a href="index.php">Home</a>
-		<a href="#">Page</a>
+		<a href="index">Home</a>
+		<a href="#">Page <?= $page ?></a>
 	</div>
 </div>
 <div class="clearfix"></div>
