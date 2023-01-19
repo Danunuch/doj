@@ -92,7 +92,7 @@ if (isset($_POST['edit-news'])) {
         echo "<script>
                 $(document).ready(function() {
                     Swal.fire({
-                        text: 'Edit Service has been completed.',
+                        text: 'Edit News & Blog has been completed.',
                         icon: 'success',
                         timer: 10000,
                         showConfirmButton: false

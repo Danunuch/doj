@@ -17,14 +17,41 @@
   <link href="css/spinner.css" rel="stylesheet">
   <link href="css/bootstrap.min.css" rel="stylesheet">
 
-  
- 
-
-
-  
 </head>
 
+<?php
+require_once('webpanelcw/config/doj_db.php');
+error_reporting(0);
+if (!isset($_SESSION)) {
+  session_start();
+}
 
+
+
+if (isset($_GET['lang'])) {
+  $lang = $_GET['lang'];
+  if ($lang == "en") {
+    $stmt = $conn->prepare("SELECT * FROM news_en");
+    $stmt->execute();
+    $row_news = $stmt->fetchAll();
+  } else if ($lang == "cn") {
+    $stmt = $conn->prepare("SELECT * FROM news_cn");
+    $stmt->execute();
+    $row_news = $stmt->fetchAll();
+  } else {
+    $stmt = $conn->prepare("SELECT * FROM news");
+    $stmt->execute();
+    $row_news = $stmt->fetchAll();
+  }
+} else {
+  $stmt = $conn->prepare("SELECT * FROM news");
+  $stmt->execute();
+  $row_news = $stmt->fetchAll();
+}
+
+
+
+?>
 
 <body>
  <!-- Pre loader -->
@@ -42,7 +69,13 @@
 <main>
   <section id="section-texthaed" class="bg-parallax" style="background:url(upload/section-texthaed.jpg) no-repeat top center;background-size:cover"> 
     <div class="container-xxl">
-      <h2>News & Blog</h2>
+      <h2><?php if ($lang == 'en') {
+              echo "News & Blog";
+            } else if ($lang == 'cn') {
+              echo "新聞與博客";
+            } else {
+              echo "ข่าวสาร & บล็อก";
+            } ?></h2>
 
 
       <?php include("navigator.php");?>
@@ -62,24 +95,52 @@
 
        <div class="row-new mobile_col_slick">
 
-                  <?php for($ii=1;$ii<=3;$ii++){ ?>
-                  <?php for($i=1;$i<=3;$i++){ ?>
-                    <a class="item-new" href="new-detail.php" title="">
-                      <div class="box-new  shadow" style='background-image:url(upload/new0<?=$i?>.jpg)'>
+                  <?php for($i=0;$i<count($row_news);$i++){ ?>
+                    <a class="item-new" href="new-detail?news_id=<?php echo $row_news[$i]['news_id']; ?><?php if (isset($_GET['lang'])) {
+                                                                                          $lang = $_GET['lang'];
+                                                                                          if ($lang == "en") {
+                                                                                            echo "&lang=en";
+                                                                                          } else if ($lang == "cn") {
+                                                                                            echo "&lang=cn";
+                                                                                          } else if ($lang == "th") {
+                                                                                            echo "&lang=th";
+                                                                                          }
+                                                                                        } else {
+                                                                                          echo "";
+                                                                                        }
+                                                                                        ?>" title="">
+                      <div class="box-new  shadow" style='background-image:url(webpanelcw/upload/upload_news/<?php echo $row_news[$i]['cover_img']; ?>'>
 
 
                         <div class="text-new">
-                          <h4>We constantly supply and deliver the right ...</h4>
-                          <p>was established formally with additional focusing on as 
-                            sugar industrial ,power plant and renewable energy business. 
+                          <h4><?php if ($lang == 'en') {
+                        echo $row_news[$i]['news_name'];
+                      } else if ($lang == 'cn') {
+                        echo $row_news[$i]['news_name'];
+                      } else {
+                        echo $row_news[$i]['news_name'];
+                      } ?>...</h4>
+                          <p><?php if ($lang == 'en') {
+                        echo $row_news[$i]['content'];
+                      } else if ($lang == 'cn') {
+                        echo $row_news[$i]['content'];
+                      } else {
+                        echo $row_news[$i]['content'];
+                      } ?> 
                           </p>
 
-                          <span class="btn btn-outline-warning">Read more <span class="material-icons-sharp">add</span></span>
+                          <span class="btn btn-outline-warning"><?php if ($lang == 'en') {
+                                                        echo "Read more";
+                                                      } else if ($lang == 'cn') {
+                                                        echo "閱讀更多";
+                                                      } else {
+                                                        echo "อ่านเพิ่มเติม";
+                                                      } ?><span class="material-icons-sharp">add</span></span>
                         </div>
 
                       </div>
                     </a>
-                  <?php } ?>
+             
                   <?php } ?>
 
 

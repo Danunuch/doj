@@ -1,3 +1,113 @@
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<?php
+require_once('webpanelcw/config/doj_db.php');
+error_reporting(0);
+if (!isset($_SESSION)) {
+  session_start();
+}
+
+// error_reporting(0);
+
+
+$secret = "#";
+
+
+if (isset($_POST['g-recaptcha-response'])) {
+
+  $captcha = $_POST['g-recaptcha-response'];
+  $veifyResponse = file_get_contents('https://google.com/recaptcha/api/siteverify?secret=' . $secret . '&response=' . $captcha);
+  $responseData = json_decode($veifyResponse);
+
+  if (!$captcha) {
+
+    echo "<script>alert('คุณไม่ได้ป้อน reCAPTCHA อย่างถูกต้อง')</script>";
+  }
+
+  if (isset($_POST['submit']) && $responseData->success) {
+    $name = $_POST['name'];
+    $email = $_POST['email'];
+    $tel = $_POST['tel']; 
+    $message = $_POST['message'];
+     
+  
+
+    if (empty($name)) {
+      echo "<script>alert('Please Enter Name')</script>";
+    } else if (empty($email)) {
+      echo "<script>alert('Please Enter Email')</script>";
+    } else if (empty($message)) {
+      echo "<script>alert('Please Enter Message')</script>";
+    } else if (empty($tel)) {
+      echo "<script>alert('Please Enter Tel')</script>";
+    } else {
+      try {
+        $send_message = $conn->prepare("INSERT INTO message(name,email,message,tel) VALUES(:name,:email,:message ,:tel)");
+        $send_message->bindParam(":name", $name);
+        $send_message->bindParam(":email", $email);
+        $send_message->bindParam(":message", $message);  
+        $send_message->bindParam(":tel", $tel);
+        $send_message->execute();
+
+        if ($send_message) {
+          echo "<script>
+          $(document).ready(function() {
+              Swal.fire({
+                  text: 'Send Message Success',
+                  icon: 'success',
+                  timer: 10000,
+                  showConfirmButton: false
+              });
+          })
+          </script>";
+          echo "<meta http-equiv='refresh' content='2;url=contact'>";
+        } else {
+          echo "<script>
+          $(document).ready(function() {
+              Swal.fire({
+                  text: 'Something Went Wrong',
+                  icon: 'error',
+                  timer: 10000,
+                  showConfirmButton: false
+              });
+          })
+          </script>";
+        }
+      } catch (PDOException $e) {
+        echo $e->getMessage();
+      }
+    }
+  }
+}
+
+
+
+if (isset($_GET['lang'])) {
+$lang = $_GET['lang'];
+if ($lang == "en") {
+$message = $conn->prepare("SELECT * FROM message");
+$message->execute();
+$row_message = $message->fetch(PDO::FETCH_ASSOC);
+} else if ($lang == "cn") {
+  $message = $conn->prepare("SELECT * FROM message");
+$message->execute();
+$row_message = $message->fetch(PDO::FETCH_ASSOC);
+} else {
+  $message = $conn->prepare("SELECT * FROM message");
+  $message->execute();
+  $row_message = $message->fetch(PDO::FETCH_ASSOC);
+}
+} else {
+  $message = $conn->prepare("SELECT * FROM message");
+  $message->execute();
+  $row_message = $message->fetch(PDO::FETCH_ASSOC);
+}
+?>
+
+
+
+
+
 <!DOCTYPE html>
 <html lang="en" class="desktop">
 <head>
@@ -19,7 +129,18 @@
 
   
 
+  <script type="text/javascript">
+    'use strict';
+    var $window = $(window);
+    $window.on({
+      'load': function() {
 
+        /* Preloader */
+        $('.spinner').fadeOut(2500);
+      },
+
+    });
+  </script>
 
   
 </head>
@@ -42,7 +163,13 @@
 <main>
   <section id="section-texthaed" class="bg-parallax" style="background:url(upload/section-texthaed.jpg) no-repeat top center;background-size:cover"> 
     <div class="container-xxl">
-      <h2>Contact us</h2>
+      <h2><?php if ($lang == 'en') {
+              echo "Contact us";
+            } else if ($lang == 'cn') {
+              echo "聯繫我們";
+            } else {
+              echo "ติดต่อเรา";
+            } ?></h2>
 
 
       <?php include("navigator.php");?>
@@ -65,8 +192,20 @@
 
 
 <div class="col-lg-6 text-center">
-  <h2 class="text-primary">Contact us</h2>
-  <p>Contact us if you have any questions. About our products and services Fill out the form below. and we will get back to you as soon as possible.</p>
+  <h2 class="text-primary"><?php if ($lang == 'en') {
+              echo "Contact us";
+            } else if ($lang == 'cn') {
+              echo "聯繫我們";
+            } else {
+              echo "ติดต่อเรา";
+            } ?></h2>
+  <p><?php if ($lang == 'en') {
+              echo "Contact us if you have any questions. About our products and services Fill out the form below. and we will get back to you as soon as possible.";
+            } else if ($lang == 'cn') {
+              echo "如果您對我們的產品和服務有任何疑問，請聯繫我們。填寫下面的表格。我們會盡快回复您。";
+            } else {
+              echo "ติดต่อเราหากคุณมีคำถามใด ๆ เกี่ยวกับสินค้าและบริการของเรา กรอกแบบฟอร์มด้านล่าง และเราจะติดต่อกลับโดยเร็วที่สุด";
+            } ?></p>
   <div class="row">
    <div class="col-md-6">
     <div class="form-group mb-3">
@@ -98,7 +237,7 @@
     <img src="images/Captcha-demo.gif" width="280" height="76" alt="">
     <div class="clearfix mt-3"></div>
 
-    <a href="" class="btn btn-warning btn-lg rounded-0 py-2 px-5"><span class="material-icons">send</span> Send Message</a>
+    <a href="" type="submit" name="submit" class="btn btn-warning btn-lg rounded-0 py-2 px-5"><span class="material-icons">send</span> Send Message</a>
     <a href="" class="btn btn-success btn-lg rounded-0 py-2 px-5">Reset</a>
   </div>
 

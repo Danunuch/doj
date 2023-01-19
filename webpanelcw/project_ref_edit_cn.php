@@ -43,6 +43,7 @@ if (isset($_POST['edit-project'])) {
     $project_start = $_POST['project_start'];
     $project_finish = $_POST['project_finish'];
     $product_list = $_POST['product_list'];
+    $cover_img = $_FILES['cover_img'];
     $ref_id = $_POST['ref_name'];
 
     $select_ref = $conn->prepare("SELECT * FROM category_ref_cn WHERE ref_name= :ref_name");
@@ -50,18 +51,45 @@ if (isset($_POST['edit-project'])) {
     $select_ref->execute();
     $query =  $select_ref->fetch(PDO::FETCH_ASSOC);
 
-    $project = $conn->prepare("UPDATE project_cn SET project_name = :project_name, customer = :customer, location = :location, project_start = :project_start,
-                                 project_finish = :project_finish, product_list = :product_list, ref_id = :ref_id WHERE project_id = :project_id");
-    $project->bindParam(":project_name", $project_name);
-    $project->bindParam(":customer", $customer);
-    $project->bindParam(":location", $location);
-    $project->bindParam(":project_start", $project_start);
-    $project->bindParam(":project_finish", $project_finish);
-    $project->bindParam(":product_list", $product_list);
-    $project->bindParam(":project_id", $project_id);
-    $project->bindParam(":ref_id", $query['ref_id']);
-    $project->execute();
 
+    $allow = array('jpg', 'jpeg', 'png', 'webp');
+    $extention1 = explode(".", $cover_img['name']); //เเยกชื่อกับนามสกุลไฟล์
+    $fileActExt1 = strtolower(end($extention1)); //แปลงนามสกุลไฟล์เป็นพิมพ์เล็ก
+    $fileNew1 = rand() . "." . "webp";
+    $filePath1 = "upload/upload_project/" . $fileNew1;
+
+
+    if (in_array($fileActExt1, $allow)) {
+        if ($cover_img['size'] > 0 && $cover_img['error'] == 0) {
+            if (move_uploaded_file($cover_img['tmp_name'], $filePath1)) {
+                $project = $conn->prepare("UPDATE project_cn SET project_name = :project_name, customer = :customer, location = :location, project_start = :project_start,
+                                 project_finish = :project_finish, product_list = :product_list, cover_img = :cover_img , ref_id = :ref_id WHERE project_id = :project_id");
+                $project->bindParam(":project_name", $project_name);
+                $project->bindParam(":customer", $customer);
+                $project->bindParam(":location", $location);
+                $project->bindParam(":project_start", $project_start);
+                $project->bindParam(":project_finish", $project_finish);
+                $project->bindParam(":product_list", $product_list); 
+                $project->bindParam(":cover_img", $fileNew1);
+                $project->bindParam(":project_id", $project_id);
+               
+                $project->bindParam(":ref_id", $query['ref_id']);
+                $project->execute();
+            }
+        }
+    } else {
+        $project = $conn->prepare("UPDATE project_cn SET project_name = :project_name, customer = :customer, location = :location, project_start = :project_start,
+        project_finish = :project_finish, product_list = :product_list, ref_id = :ref_id WHERE project_id = :project_id");
+        $project->bindParam(":project_name", $project_name);
+        $project->bindParam(":customer", $customer);
+        $project->bindParam(":location", $location);
+        $project->bindParam(":project_start", $project_start);
+        $project->bindParam(":project_finish", $project_finish);
+        $project->bindParam(":product_list", $product_list);
+        $project->bindParam(":project_id", $project_id);
+        $project->bindParam(":ref_id", $query['ref_id']);
+        $project->execute();
+    }
 
     foreach ($_FILES['img']['tmp_name'] as $key => $value) {
         $file_names = $_FILES['img']['name'];
@@ -118,6 +146,7 @@ if (isset($_POST['edit-project'])) {
     <link rel="stylesheet" href="assets/css/main/app.css">
     <link rel="stylesheet" href="assets/css/main/app-dark.css">
     <link rel="stylesheet" href="css/project.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="css/service.css?v=<?php echo time(); ?>">
     <!-- <link rel="shortcut icon" href="assets/images/logo/favicon.svg" type="image/x-icon"> -->
     <link rel="shortcut icon" href="image/logodoj.png" type="image/png">
 
@@ -172,7 +201,7 @@ if (isset($_POST['edit-project'])) {
                                     <input type="text" name="product_list" value="<?php echo $row_project['product_list'] ?>" class="form-control">
                                     <h6 for="ref_name" class="col-form-label">Category Project References</h6>
                                     <input type="text" name="ref_name" value="<?php echo $query['ref_name'] ?>" class="form-control">
-                                    
+
                                 </div>
                                 <div class="content-img">
                                     <span id="upload-img">Content Image</span>
@@ -192,11 +221,28 @@ if (isset($_POST['edit-project'])) {
                                         ?>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
 
+
+                        <div class="title">
+                            <h6 class="txt-cover">Cover Image</h6>
+                            <div class="title-img">
+                                <span id="upload-img">Upload Image</span>
+                                <div class="group-pos">
+                                    <input type="file" name="cover_img" id="imgInput-cover" class="form-control">
+                                    <button type="button" class="btn reset" id="reset2">Reset</button>
+                                </div>
+                                <span class="file-support">Only file are support ('jpg', 'jpeg', 'png', 'webp').</span>
+                                <div id="gallery-cover">
+                                    <div class='box-edit-img-cover'>
+                                        <span class='del-edit-img'></span>
+                                        <img class='edit-img-cover' id='previewImg-cover' src="upload/upload_project/<?php echo $row_project['cover_img'] ?>">
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-
                 </form>
             </section>
             <?php include('footer.php'); ?>
@@ -205,7 +251,17 @@ if (isset($_POST['edit-project'])) {
     <script language="javascript" src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
     <script src="assets/js/bootstrap.js"></script>
     <script src="assets/js/app.js"></script>
+    <script>
+        let imgInput = document.getElementById('imgInput-cover');
+        let previewImg = document.getElementById('previewImg-cover');
 
+        imgInput.onchange = evt => {
+            const [file] = imgInput.files;
+            if (file) {
+                previewImg.src = URL.createObjectURL(file);
+            }
+        }
+    </script>
     <script>
         function preview_image() {
             var total_file = document.getElementById("imgInput").files.length;

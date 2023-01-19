@@ -34,23 +34,28 @@ $stmt = $conn->prepare("SELECT * FROM project_img");
 $stmt->execute();
 $row_project_img = $stmt->fetchAll();
 
-if (isset($_GET['lang'])) {
+if (isset($_GET['lang']) && $_GET['ref_id']) {
   $lang = $_GET['lang'];
+  $ref_id= $_GET['ref_id'];
   if ($lang == "en") {
-    $stmt = $conn->prepare("SELECT * FROM project_en");
+    $stmt = $conn->prepare("SELECT * FROM project_en WHERE ref_id = :ref_id");
+    $stmt->bindParam(":ref_id", $ref_id);
     $stmt->execute();
     $row_project = $stmt->fetchAll();
   } else if ($lang == "cn") {
-    $stmt = $conn->prepare("SELECT * FROM project_cn");
+    $stmt = $conn->prepare("SELECT * FROM project_cn WHERE ref_id = :ref_id");
+    $stmt->bindParam(":ref_id", $ref_id);
     $stmt->execute();
     $row_project = $stmt->fetchAll();
   } else {
-    $stmt = $conn->prepare("SELECT * FROM project");
+    $stmt = $conn->prepare("SELECT * FROM project WHERE ref_id = :ref_id");
+    $stmt->bindParam(":ref_id", $ref_id);
     $stmt->execute();
     $row_project = $stmt->fetchAll();
   }
 } else {
-  $stmt = $conn->prepare("SELECT * FROM project");
+  $stmt = $conn->prepare("SELECT * FROM project WHERE ref_id = :ref_id");
+  $stmt->bindParam(":ref_id", $ref_id);
   $stmt->execute();
   $row_project = $stmt->fetchAll();
 }
@@ -77,6 +82,9 @@ if (isset($_GET['lang'])) {
   $stmt->execute();
   $row_category_ref = $stmt->fetchAll();
 }
+
+
+
 
 ?>
 
@@ -151,7 +159,7 @@ if (isset($_GET['lang'])) {
                 } ?>
               </a>
               <?php for ($i = 0; $i < count($row_category_ref); $i++) { ?>
-                <a href="project?project_id=<?php echo $row_category_ref['ref_id']; ?><?php if (isset($_GET['lang'])) {
+                <a href="project?ref_id=<?php echo $row_category_ref[$i]['ref_id']; ?><?php if (isset($_GET['lang'])) {
                                                                                         $lang = $_GET['lang'];
                                                                                         if ($lang == "en") {
                                                                                           echo "&lang=en";
@@ -161,7 +169,7 @@ if (isset($_GET['lang'])) {
                                                                                           echo "&lang=th";
                                                                                         }
                                                                                       } else {
-                                                                                        echo "";
+                                                                                        echo "&lang=th";
                                                                                       }
                                                                                       ?>" class="list-group-item list-group-item-action"><?php if ($lang == 'en') {
                                                                                                                                             echo $row_category_ref[$i]['ref_name'];
@@ -192,12 +200,24 @@ if (isset($_GET['lang'])) {
             <div class="row justify-content-center">
 
 
-              <?php for ($i = 1; $i <= 6; $i++) { ?>
+              <?php for ($i = 0; $i <count($row_project); $i++) { ?>
 
                 <div class="col-md-6 col-lg-6 p-md-0">
-                  <a href="project-detail.php" class="item-portfolio">
+                  <a href="project-detail?project_id=<?php echo $row_project[$i]['project_id']; ?><?php if (isset($_GET['lang'])) {
+                                                                                          $lang = $_GET['lang'];
+                                                                                          if ($lang == "en") {
+                                                                                            echo "&lang=en";
+                                                                                          } else if ($lang == "cn") {
+                                                                                            echo "&lang=cn";
+                                                                                          } else if ($lang == "th") {
+                                                                                            echo "&lang=th";
+                                                                                          }
+                                                                                        } else {
+                                                                                          echo "";
+                                                                                        }
+                                                                                        ?>" class="item-portfolio">
                     <div class="img-portfolio">
-                      <img class="img-fluid w-100" src="webpanelcw/upload/upload_project/<?php echo $row_project_img[$i]['image']; ?>">
+                      <img class="img-fluid w-100" src="webpanelcw/upload/upload_project/<?php echo $row_project[$i]['cover_img']; ?>">
                     </div>
 
                     <div class="text-portfolio">

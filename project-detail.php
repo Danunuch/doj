@@ -17,13 +17,58 @@
   <link href="css/spinner.css" rel="stylesheet">
   <link href="css/bootstrap.min.css" rel="stylesheet">
 
-  
- 
-
-
 
   
 </head>
+
+
+
+<?php
+require_once('webpanelcw/config/doj_db.php');
+//error_reporting(0);
+if (!isset($_SESSION)) {
+  session_start();
+}
+
+
+
+
+if (isset($_GET['project_id'])) {
+  $project = $_GET['project_id'];
+
+  $stmt_img = $conn->prepare("SELECT * FROM project_img WHERE project_id = :img_id");
+  $stmt_img->bindParam(":img_id", $project);
+  $stmt_img->execute();
+  $row_project_img = $stmt_img->fetchAll();
+
+  if (isset($_GET['lang'])) {
+    $lang = $_GET['lang'];
+    if ($lang == "en") {
+      $stmt = $conn->prepare("SELECT * FROM project_en WHERE project_id = :project_id");
+      $stmt->bindParam(":project_id", $project);
+      $stmt->execute();
+      $row_project = $stmt->fetch(PDO::FETCH_ASSOC);
+    } else if ($lang == "cn") {
+      $stmt = $conn->prepare("SELECT * FROM project_cn WHERE project_id = :project_id");
+      $stmt->bindParam(":project_id", $project);
+      $stmt->execute();
+      $row_project = $stmt->fetch(PDO::FETCH_ASSOC);
+    } else {
+      $stmt = $conn->prepare("SELECT * FROM project WHERE project_id = :project_id");
+      $stmt->bindParam(":project_id", $project);
+      $stmt->execute();
+      $row_project = $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+  } else {
+    $project = $_GET['project_id'];
+    $stmt = $conn->prepare("SELECT * FROM project WHERE project_id = :project_id");
+    $stmt->bindParam(":project_id", $project);
+    $stmt->execute();
+    $row_project = $stmt->fetch(PDO::FETCH_ASSOC);
+  }
+}
+
+?>
 
 
 
@@ -43,7 +88,17 @@
 <main>
   <section id="section-texthaed" class="bg-parallax" style="background:url(upload/section-texthaed.jpg) no-repeat top center;background-size:cover"> 
     <div class="container-xxl">
-      <h2>Project References</h2>
+      <h2><?php if (isset($_GET['lang'])) {
+         $lang = $_GET['lang'];
+          if ($lang == "en") {
+          echo "Project References";
+          } else if ($lang == "cn") {
+           echo "表現";
+           } else if ($lang == "th") {
+           echo "ผลงาน";
+            }
+          
+         } ?></h2>
 
 
       <?php include("navigator.php");?>
@@ -72,7 +127,14 @@
         <div class="col-md-6 ">
 
 
-          <h3 class="mb-4 text-uppercase text-primary">Bagasse belt conveyor</h3>
+          <h3 class="mb-4 text-uppercase text-primary">
+            <?php if ($lang == 'en') {
+            echo $row_project['project_name'];
+          } else if ($lang == 'cn') {
+            echo $row_project['project_name'];
+          } else {
+            echo $row_project['project_name'];
+          } ?></h3>
 
 
 
@@ -83,47 +145,153 @@
 
 
               <tr>
-                <td class="text-white bg-success"><b>Project name:</b></td>
+                <td class="text-white bg-success"><b>
+                  <?php if (isset($_GET['lang'])) {
+         $lang = $_GET['lang'];
+          if ($lang == "en") {
+          echo "Project name:";
+          } else if ($lang == "cn") {
+           echo "作品名稱:";
+           } else if ($lang == "th") {
+           echo "ชื่อผลงาน:";
+            }
+          } else {
+            echo "ชื่อผลงาน:";
+          
+         } ?></b></td>
 
-                <td>Bagasses Belt Conveyor</td>
-
-              </tr>
-
-
-              <tr>
-                <td class="text-white bg-success"><b>Customer:</b></td>
-
-                <td>KTIS</td>
-
-              </tr>
-
-
-              <tr>
-                <td class="text-white bg-success"><b>Location:</b></td>
-
-                <td>Nakhon Sawan, Thailand</td>
-
-              </tr>
-
-
-              <tr>
-                <td class="text-white bg-success"><b>Project Start:</b></td>
-
-                <td>July 2021</td>
+                <td><?php if ($lang == 'en') {
+            echo $row_project['project_name'];
+          } else if ($lang == 'cn') {
+            echo $row_project['project_name'];
+          } else {
+            echo $row_project['project_name'];
+            
+          } ?></td>
 
               </tr>
 
 
               <tr>
-                <td class="text-white bg-success"><b>Project Finish:</b></td>
-                <td>December 2021</td>
+                <td class="text-white bg-success"><b><?php if (isset($_GET['lang'])) {
+         $lang = $_GET['lang'];
+          if ($lang == "en") {
+          echo "Customer:";
+          } else if ($lang == "cn") {
+           echo "顧客:";
+           } else if ($lang == "th") {
+           echo "ลูกค้า:";
+            }
+          } else {
+            echo "ลูกค้า:";
+         } ?></b></td>
+
+                <td><?php if ($lang == 'en') {
+            echo $row_project['customer'];
+          } else if ($lang == 'cn') {
+            echo $row_project['customer'];
+          } else {
+            echo $row_project['customer'];
+          } ?></td>
+
+              </tr>
+
+
+              <tr>
+                <td class="text-white bg-success"><b><?php if (isset($_GET['lang'])) {
+         $lang = $_GET['lang'];
+          if ($lang == "en") {
+          echo "Location:";
+          } else if ($lang == "cn") {
+           echo "地點:";
+           } else if ($lang == "th") {
+           echo "ที่ตั้ง:";
+            }
+          } else {
+            echo "ที่ตั้ง:";
+         } ?></b></td>
+
+                <td><?php if ($lang == 'en') {
+            echo $row_project['location'];
+          } else if ($lang == 'cn') {
+            echo $row_project['location'];
+          } else {
+            echo $row_project['location'];
+          } ?></td>
+
+              </tr>
+
+
+              <tr>
+                <td class="text-white bg-success"><b><?php if (isset($_GET['lang'])) {
+         $lang = $_GET['lang'];
+          if ($lang == "en") {
+          echo "Project Start:";
+          } else if ($lang == "cn") {
+           echo "項目開始:";
+           } else if ($lang == "th") {
+           echo "เริ่มต้น:";
+            }
+          } else {
+            echo "เริ่มต้น:";
+         } ?></b></td>
+
+                <td><?php if ($lang == 'en') {
+            echo $row_project['project_start'];
+          } else if ($lang == 'cn') {
+            echo $row_project['project_start'];
+          } else {
+            echo $row_project['project_start'];
+          } ?></td>
+
+              </tr>
+
+
+              <tr>
+                <td class="text-white bg-success"><b><?php if (isset($_GET['lang'])) {
+         $lang = $_GET['lang'];
+          if ($lang == "en") {
+          echo "Project Finish:";
+          } else if ($lang == "cn") {
+           echo "項目完成:";
+           } else if ($lang == "th") {
+           echo "เสร็จสิ้น:";
+            }
+          } else {
+            echo "เสร็จสิ้น:";
+          
+         } ?></b></td>
+                <td><?php if ($lang == 'en') {
+            echo $row_project['project_finish'];
+          } else if ($lang == 'cn') {
+            echo $row_project['project_finish'];
+          } else {
+            echo $row_project['project_finish'];
+          } ?></td>
 
               </tr>
 
               <tr>
-                <td class="text-white bg-success"><b>Product list:</b></td>
+                <td class="text-white bg-success"><b><?php if (isset($_GET['lang'])) {
+         $lang = $_GET['lang'];
+          if ($lang == "en") {
+          echo "Product list:";
+          } else if ($lang == "cn") {
+           echo "產品列表：";
+           } else if ($lang == "th") {
+           echo "รายการสินค้า:";
+            }
+          } else {
+            echo "รายการสินค้า:";
+         } ?></b></td>
 
-                <td>Bagasse Belt Conveyor</td>
+                <td><?php if ($lang == 'en') {
+            echo $row_project['product_list'];
+          } else if ($lang == 'cn') {
+            echo $row_project['product_list'];
+          } else {
+            echo $row_project['product_list'];
+          } ?></td>
 
               </tr>
 
@@ -140,17 +308,11 @@
 
         <div class="col-md-6  ">
 
-
-
-          <img id="show-product" class="img-responsive mb-4" src="upload/g01.jpg" width="100%">
-
-
-
-
+        <img id="show-product" class="img-responsive mb-4" src="webpanelcw/upload/upload_project/<?php echo $row_project_img[0]['image'];?>" width="100%">
           <div class="row product_detail">
-           <?php for($i=1;$i<=5;$i++){ ?>
+           <?php for($i=1;$i<count($row_project_img);$i++){ ?>
             <div class="col-12">
-              <a href="javascript:void(0)" id="list" data-test="upload/g0<?=$i?>.jpg"><img class="img-responsive" data-image="original" src="upload/g0<?=$i?>.jpg" alt="Cannabis"></a>
+              <a href="javascript:void(0)" id="list" data-test="webpanelcw/upload/upload_project/<?php echo $row_project_img[$i]['image'];?>"><img class="img-responsive" image="original" src="webpanelcw/upload/upload_project/<?php echo $row_project_img[$i]['image'];?>" alt="Cannabis"></a>
             </div>
           <?php } ?>       
 

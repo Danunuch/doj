@@ -159,7 +159,7 @@ if (isset($_POST['delete_all'])) {
                                                     <input type="checkbox" class="form-check-input checkbox checkbox-select" name="ids[]" value=<?php echo $row_project_cn[$i]['project_id'] ?>>
                                                 </td>
                                                 <td align="center" width="20%">
-                                                    <img width="50%" src="upload/upload_project/<?php echo $row_img[0]['image']; ?>" alt="">
+                                                    <img width="50%" src="upload/upload_project/<?php echo $row_project_cn[$i]['cover_img']; ?>" alt="">
                                                 </td>
                                                 <td align="left"><?php echo $row_project_cn[$i]['project_name']; ?></td>
                                                 <td align="center"><?php echo $row_project_cn[$i]['created_at']; ?></td>

@@ -114,7 +114,7 @@ if (isset($_GET['lang'])) {
 
           <?php for ($i = 0; $i < count($row_service); $i++) { ?>
             <div class="col-md-4">
-              <a href="service-detail?service_id=<?php echo $row_service[$i]['service_id']; ?> <?php if (isset($_GET['lang'])) {
+              <a href="service-detail?service_id=<?php echo $row_service[$i]['service_id']; ?><?php if (isset($_GET['lang'])) {
                                                                                           $lang = $_GET['lang'];
                                                                                           if ($lang == "en") {
                                                                                             echo "&lang=en";

@@ -18,6 +18,7 @@ if (isset($_POST['add-project'])) {
     $project_finish = $_POST['project_finish'];
     $product_list = $_POST['product_list'];
     $status = "on";
+    $cover_img = $_FILES['cover_img'];
     $ref_id = $_POST['ref_name'];
 
     if (empty($project_name)) {
@@ -34,19 +35,49 @@ if (isset($_POST['add-project'])) {
         echo "<script>alert('Please Enter Product List')</script>";
     } else {
         try {
-            $project = $conn->prepare("INSERT INTO project_cn (project_name, customer, location, project_start, project_finish, product_list ,status , ref_id)
-                                        VALUES(:project_name, :customer, :location, :project_start, :project_finish, :product_list ,:status, :ref_id )");
-            $project->bindParam(":project_name", $project_name);
-            $project->bindParam(":customer", $customer);
-            $project->bindParam(":location", $location);
-            $project->bindParam(":project_start", $project_start);
-            $project->bindParam(":project_finish", $project_finish);
-            $project->bindParam(":product_list", $product_list);
-            $project->bindParam(":status", $status);
-            $project->bindParam(":ref_id", $ref_id);
-            $project->execute();
 
-            $id_project = $conn->lastInsertId();
+            $allow = array('jpg', 'jpeg', 'png', 'webp');
+            $extention1 = explode(".", $cover_img['name']); //เเยกชื่อกับนามสกุลไฟล์
+            $fileActExt1 = strtolower(end($extention1)); //แปลงนามสกุลไฟล์เป็นพิมพ์เล็ก
+            $fileNew1 = rand() . "." . "webp";
+            $filePath1 = "upload/upload_project/" . $fileNew1;
+
+
+            if (in_array($fileActExt1, $allow)) {
+                if ($cover_img['size'] > 0 && $cover_img['error'] == 0) {
+                    if (move_uploaded_file($cover_img['tmp_name'], $filePath1)) {
+                        $project = $conn->prepare("INSERT INTO project_cn (project_name, customer, location, project_start, project_finish, product_list ,status , cover_img, ref_id)
+                        VALUES(:project_name, :customer, :location, :project_start, :project_finish, :product_list ,:status , :cover_img , :ref_id )");
+                        $project->bindParam(":project_name", $project_name);
+                        $project->bindParam(":customer", $customer);
+                        $project->bindParam(":location", $location);
+                        $project->bindParam(":project_start", $project_start);
+                        $project->bindParam(":project_finish", $project_finish);
+                        $project->bindParam(":product_list", $product_list);
+                        $project->bindParam(":status", $status);
+                        $project->bindParam(":cover_img", $fileNew1);
+                        $project->bindParam(":ref_id", $ref_id);
+                        $project->execute();
+
+                        $id_project = $conn->lastInsertId();
+                    }
+                }
+            } else {
+                $project = $conn->prepare("INSERT INTO project_cn (project_name, customer, location, project_start, project_finish, product_list ,status , ref_id)
+                VALUES(:project_name, :customer, :location, :project_start, :project_finish, :product_list ,:status , :ref_id )");
+                $project->bindParam(":project_name", $project_name);
+                $project->bindParam(":customer", $customer);
+                $project->bindParam(":location", $location);
+                $project->bindParam(":project_start", $project_start);
+                $project->bindParam(":project_finish", $project_finish);
+                $project->bindParam(":product_list", $product_list);
+                $project->bindParam(":status", $status);
+                $project->bindParam(":ref_id", $ref_id);
+                $project->execute();
+
+                $id_project = $conn->lastInsertId();
+            }
+
 
 
             foreach ($_FILES['img']['tmp_name'] as $key => $value) {
@@ -110,6 +141,7 @@ if (isset($_POST['add-project'])) {
     <link rel="stylesheet" href="assets/css/main/app.css">
     <link rel="stylesheet" href="assets/css/main/app-dark.css">
     <link rel="stylesheet" href="css/project.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="css/service.css?v=<?php echo time(); ?>">
     <!-- <link rel="shortcut icon" href="assets/images/logo/favicon.svg" type="image/x-icon"> -->
     <link rel="shortcut icon" href="image/logodoj.png" type="image/png">
 
@@ -146,6 +178,12 @@ $query =  $select_stmt->fetchAll();
                         </div>
                         <div class="card-body">
 
+                            <?php
+                            $stmt = $conn->prepare("SELECT* FROM category_ref_cn");
+                            $stmt->execute();
+                            $category_ref = $stmt->fetchAll();
+
+                            ?>
                             <div class="content">
                                 <div class="project-name">
                                     <h6>Project Name</h6>
@@ -175,12 +213,26 @@ $query =  $select_stmt->fetchAll();
                                     <span id="upload-img">Content Image</span>
                                     <div class="group-pos">
                                         <input type="file" name="img[]" id="imgInput" onchange="preview_image();" class="form-control" multiple>
-                                        <button type="button" class="btn reset" id="reset2">Reset</button>
+                                       
                                     </div>
                                     <span class="file-support">Only file are support ('jpg', 'jpeg', 'png', 'webp').</span>
                                     <div id="gallery"></div>
                                 </div>
 
+                            </div>
+                            <div class="title-img">
+                                <span id="upload-img">Cover Image</span>
+                                <div class="group-pos">
+                                    <input type="file" name="cover_img" id="imgInput-cover" class="form-control">
+                                   
+                                </div>
+                                <span class="file-support">Only file are support ('jpg', 'jpeg', 'png', 'webp').</span>
+                                <div id="gallery-cover">
+                                    <div class='box-edit-img-cover'>
+                                        <span class='del-edit-img'></span>
+                                        <img class='edit-img-cover' id='previewImg-cover' src=''>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -199,6 +251,18 @@ $query =  $select_stmt->fetchAll();
             var total_file = document.getElementById("imgInput").files.length;
             for (var i = 0; i < total_file; i++) {
                 $('#gallery').append("<div class='box-edit-img'>  <span class='del-edit-img'></span>  <img class='previewImg' id='edit-img' src='" + URL.createObjectURL(event.target.files[i]) + "'> </div>");
+            }
+        }
+    </script>
+
+    <script>
+        let imgInput = document.getElementById('imgInput-cover');
+        let previewImg = document.getElementById('previewImg-cover');
+
+        imgInput.onchange = evt => {
+            const [file] = imgInput.files;
+            if (file) {
+                previewImg.src = URL.createObjectURL(file);
             }
         }
     </script>

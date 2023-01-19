@@ -35,8 +35,6 @@ if (isset($_GET['lang']) && $_GET['lang'] != "") {
 
 
 
-
-
 <!-- Start WOWSlider.com BODY section -->
 <!-- add to the <body> of your page -->
 <div id="wowslider-container1">

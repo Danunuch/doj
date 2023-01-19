@@ -217,7 +217,19 @@ if (isset($_GET['lang'])) {
 
 					<?php for ($i = 1; $i <= 3; $i++) { ?>
 						<div class="col-md-4">
-							<a href="service-detail" class="item-service">
+							<a href="service-detail?service_id=<?php echo $row_service[$i]['service_id']; ?><?php if (isset($_GET['lang'])) {
+                                                                                          $lang = $_GET['lang'];
+                                                                                          if ($lang == "en") {
+                                                                                            echo "&lang=en";
+                                                                                          } else if ($lang == "cn") {
+                                                                                            echo "&lang=cn";
+                                                                                          } else if ($lang == "th") {
+                                                                                            echo "&lang=th";
+                                                                                          }
+                                                                                        } else {
+                                                                                          echo "";
+                                                                                        }
+                                                                                        ?>" class="item-service">
 								<div class="img-service">
 									<img class="img-fluid w-100" src="webpanelcw/upload/upload_service/<?php echo $row_service_img[$i]['image']; ?>">
 								</div>
@@ -245,7 +257,7 @@ if (isset($_GET['lang'])) {
 				</div>
 
 				<div class="text-center mt-5">
-					<a href="service.php" class="btn btn-outline-dark text-uppercase"><?php if ($lang == 'en') {
+					<a href="service" class="btn btn-outline-dark text-uppercase"><?php if ($lang == 'en') {
 																							echo "View all";
 																						} else if ($lang == 'cn') {
 																							echo "查看全部";
@@ -295,7 +307,19 @@ if (isset($_GET['lang'])) {
 
 						<?php for ($i = 1; $i <= 6; $i++) { ?>
 							<div class="col-md-6 col-lg-4 p-md-0">
-								<a href="project-detail" class="item-portfolio">
+								<a href="project-detail?project_id=<?php echo $row_project[$i]['project_id']; ?><?php if (isset($_GET['lang'])) {
+                                                                                          $lang = $_GET['lang'];
+                                                                                          if ($lang == "en") {
+                                                                                            echo "&lang=en";
+                                                                                          } else if ($lang == "cn") {
+                                                                                            echo "&lang=cn";
+                                                                                          } else if ($lang == "th") {
+                                                                                            echo "&lang=th";
+                                                                                          }
+                                                                                        } else {
+                                                                                          echo "";
+                                                                                        }
+                                                                                        ?>" class="item-portfolio">
 									<div class="img-portfolio">
 										<img class="img-fluid w-100" src="webpanelcw/upload/upload_project/<?php echo $row_project_img[$i]['image']; ?>">
 									</div>
@@ -314,7 +338,7 @@ if (isset($_GET['lang'])) {
 						<?php } ?>
 
 						<div class="col-md-6 col-lg-4 mt-5">
-							<a href="project.php" class="btn btn-success btn-lg rounded-0 py-2 px-5 w-100 text-uppercase"><?php if ($lang == 'en') {
+							<a href="project" class="btn btn-success btn-lg rounded-0 py-2 px-5 w-100 text-uppercase"><?php if ($lang == 'en') {
 																																echo "view all project";
 																															} else if ($lang == 'cn') {
 																																echo "查看所有作品";
@@ -356,7 +380,7 @@ if (isset($_GET['lang'])) {
 
 
 					<div class="col-md-6 text-center text-lg-end order-3 order-md-2">
-						<a href="new.php" class="btn btn-outline-dark text-uppercase"><?php if ($lang == 'en') {
+						<a href="new" class="btn btn-outline-dark text-uppercase"><?php if ($lang == 'en') {
 																							echo "View all";
 																						} else if ($lang == 'cn') {
 																							echo "查看全部";
@@ -369,8 +393,20 @@ if (isset($_GET['lang'])) {
 					<div class="col-md-12 order-2 order-md-3">
 						<div class="row-new mobile_col_slick">
 
-							<?php for ($i = 1; $i <= 3; $i++) { ?>
-								<a class="item-new" href="new-detail.php" title="">
+							<?php for ($i = 0; $i <count($row_news); $i++) { ?>
+								<a class="item-new" href="new-detail?news_id=<?php echo $row_news[$i]['news_id']; ?><?php if (isset($_GET['lang'])) {
+                                                                                          $lang = $_GET['lang'];
+                                                                                          if ($lang == "en") {
+                                                                                            echo "&lang=en";
+                                                                                          } else if ($lang == "cn") {
+                                                                                            echo "&lang=cn";
+                                                                                          } else if ($lang == "th") {
+                                                                                            echo "&lang=th";
+                                                                                          }
+                                                                                        } else {
+                                                                                          echo "";
+                                                                                        }
+                                                                                        ?>" title="">
 									<div class="box-new  shadow" style='background-image:url(webpanelcw/upload/upload_news/<?php echo $row_news[$i]['cover_img']; ?>'>
 
 

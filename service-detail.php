@@ -1,24 +1,21 @@
 <?php
 require_once('webpanelcw/config/doj_db.php');
-error_reporting(0);
+//error_reporting(0);
 if (!isset($_SESSION)) {
   session_start();
 }
 
 
 
-$stmt = $conn->prepare("SELECT * FROM service_img");
-$stmt->execute();
-$row_service_img = $stmt->fetchAll();
 
 
-$service = $_GET['service_id'];
-
-
-if (isset($_GET['service_id']) && isset($_GET['lang'])) {
+if (isset($_GET['service_id'])) {
   $service = $_GET['service_id'];
-  $lang = $_GET['lang'];
 
+  $stmt_img = $conn->prepare("SELECT * FROM service_img WHERE service_id = :img_id");
+  $stmt_img->bindParam(":img_id", $service);
+  $stmt_img->execute();
+  $row_service_img = $stmt_img->fetchAll();
 
   if (isset($_GET['lang'])) {
     $lang = $_GET['lang'];
@@ -26,25 +23,25 @@ if (isset($_GET['service_id']) && isset($_GET['lang'])) {
       $stmt = $conn->prepare("SELECT * FROM service_en WHERE service_id = :service_id");
       $stmt->bindParam(":service_id", $service);
       $stmt->execute();
-      $row_service = $service->fetchAll();
+      $row_service = $stmt->fetch(PDO::FETCH_ASSOC);
     } else if ($lang == "cn") {
       $stmt = $conn->prepare("SELECT * FROM service_cn WHERE service_id = :service_id");
       $stmt->bindParam(":service_id", $service);
       $stmt->execute();
-      $row_service = $service->fetchAll();
+      $row_service = $stmt->fetch(PDO::FETCH_ASSOC);
     } else {
       $stmt = $conn->prepare("SELECT * FROM service_th WHERE service_id = :service_id");
       $stmt->bindParam(":service_id", $service);
       $stmt->execute();
-      $row_service = $service->fetchAll();
+      $row_service = $stmt->fetch(PDO::FETCH_ASSOC);
     }
-  }
-  } else if(isset($_GET['service_id'])) {
+  } else {
     $service = $_GET['service_id'];
     $stmt = $conn->prepare("SELECT * FROM service_th WHERE service_id = :service_id");
     $stmt->bindParam(":service_id", $service);
     $stmt->execute();
-    $row_service = $service->fetchAll();
+    $row_service = $stmt->fetch(PDO::FETCH_ASSOC);
+  }
 }
 
 ?>
@@ -66,7 +63,7 @@ if (isset($_GET['service_id']) && isset($_GET['lang'])) {
 
   <title>DOJ INDUSTRIAL (ดอจ อุตสาหการ)</title>
 
-	<link rel="shortcut icon" href="images/logo.png" type="image/png">
+  <link rel="shortcut icon" href="images/logo.png" type="image/png">
 
   <link href="css/spinner.css" rel="stylesheet">
   <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -96,13 +93,17 @@ if (isset($_GET['service_id']) && isset($_GET['lang'])) {
   <main>
     <section id="section-texthaed" class="bg-parallax" style="background:url(upload/section-texthaed.jpg) no-repeat top center;background-size:cover">
       <div class="container-xxl">
-        <h2><?php if ($lang == 'en') {
-              echo "Services";
-            } else if ($lang == 'cn') {
-              echo "服務";
-            } else {
-              echo "บริการ";
-            } ?></h2>
+        <h2><?php if (isset($_GET['lang'])) {
+         $lang = $_GET['lang'];
+          if ($lang == "en") {
+          echo "Services";
+          } else if ($lang == "cn") {
+           echo "服務";
+           } else if ($lang == "th") {
+           echo "บริการ";
+            }
+          
+         } ?></h2>
 
 
         <?php include("navigator.php"); ?>
@@ -137,14 +138,14 @@ if (isset($_GET['service_id']) && isset($_GET['lang'])) {
               echo $row_service['content'];
             }
           } else {
-            echo "";
+            echo $row_service['content'];
           }
-         ?>
+          ?>
         </p>
 
         <div class="row  zoomimg">
 
-          <?php for ($i = 1; $i <= 3; $i++) { ?>
+          <?php for ($i = 0; $i < count($row_service_img); $i++) { ?>
 
             <div class="col-md-4 col-sm-6">
               <div class="view-seventh1">
