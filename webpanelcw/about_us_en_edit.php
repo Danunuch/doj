@@ -163,7 +163,7 @@ if (isset($_POST['save'])) {
                                 <h5>Upload Image here</h5>
                                 <div class="box-input-upload">
                                     <input type="file" id="imgInput" name="img" class="form-control">
-                                    <button type="button" id="reset" class="btn btn-reset">Reset</button>
+                                 
                                 </div>
                                 <span style="color: #ff4122;">Only file are support ('jpg', 'jpeg', 'png', 'webp').</span>
                                 <div class="preview-img">

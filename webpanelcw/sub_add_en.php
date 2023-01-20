@@ -12,14 +12,18 @@ if (!isset($_SESSION['admin_login'])) {
 
 if (isset($_POST['sub_add'])) {
     $sub_name = $_POST['sub_name'];
+    $pt_id = $_POST['type_name'];
 
 
     if (empty($sub_name)) {
         echo "<script>alert('กรุณากรอกชื่อประเภท')</script>";
+    } else if (empty($pt_id)) {
+        echo "<script>alert('กรุณากรอกชื่อประเภท')</script>";
     } else {
-        $sub_pro = $conn->prepare("INSERT INTO category_sub_en (sub_name)
-                                        VALUES(:sub_name)");
+        $sub_pro = $conn->prepare("INSERT INTO category_sub_en (sub_name, pt_id)
+                                        VALUES(:sub_name, :pt_id)");
         $sub_pro->bindParam(":sub_name", $sub_name);
+        $sub_pro->bindParam(":pt_id", $pt_id);
         $sub_pro->execute();
     }
 
@@ -49,7 +53,6 @@ if (isset($_POST['sub_add'])) {
     }
 }
 
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -68,7 +71,12 @@ if (isset($_POST['sub_add'])) {
     <link rel="stylesheet" href="assets/css/shared/iconly.css">
 
 </head>
+<?php
+$select_stmt = $conn->prepare("SELECT * FROM category_product_en");
+$select_stmt->execute();
+$query =  $select_stmt->fetchAll();
 
+?>
 <body>
     <div id="app">
         <?php include('sidebar.php'); ?>
@@ -78,7 +86,12 @@ if (isset($_POST['sub_add'])) {
                     <i class="bi bi-justify fs-3"></i>
                 </a>
             </header>
+            <?php
+                            $stmt = $conn->prepare("SELECT* FROM category_product_en");
+                            $stmt->execute();
+                            $category_product = $stmt->fetchAll();
 
+                            ?>
             <div class="page-heading">
                 <h3>Sup Category Add</h3>
             </div>
@@ -90,9 +103,18 @@ if (isset($_POST['sub_add'])) {
                             <button type="submit" name="sub_add" class="btn btn-save">Save</button>
                         </div>
                         <div class="card-body">
+
                             <div class="product-name">
                                 <h6>Sup Category Name</h6>
                                 <input type="text" name="sub_name" class="form-control">
+                                <h6 for="type_name" class="col-form-label">Category Project References</h6>
+                                    <select class="form-control" name="type_name" id="">
+                                        <option value="" selected disabled>Select</option>
+                                        <?php foreach ($query as $value) { ?>
+                                            <option value="<?= $value['pt_id'] ?>"><?= $value['type_name'] ?></option>
+                                        <?php } ?>
+                                    </select>
+                            
                             </div>
                         </div>
                     </div>

@@ -250,7 +250,7 @@ $row_message = $message->fetch(PDO::FETCH_ASSOC);
 
 
 <div class="col-lg-6">
-<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3873.841691893298!2d100.69746092759078!3d13.848539459211057!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x311d635c7a870851%3A0x74de62121487bb7c!2z4Lib4Lix4LiN4LiN4Liy4Lij4Liy4Lih4Lit4Li04LiZ4LiX4Lij4LiyIOC5geC4guC4p-C4hyDguJrguLLguIfguIrguLHguJkg4LmA4LiC4LiV4LiE4Lil4Lit4LiH4Liq4Liy4Lih4Lin4LiyIOC4geC4o-C4uOC4h-C5gOC4l-C4nuC4oeC4q-C4suC4meC4hOC4oyAxMDUxMA!5e0!3m2!1sth!2sth!4v1668680617558!5m2!1sth!2sth" width="600" height="450" ></iframe>
+<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3869.131230451608!2d100.50273491485785!3d14.128379092261715!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30e27da9b2e638d1%3A0x2b214b969caf0a9d!2zRE9KIElORFVTVFJJQUwgKOC4lOC4reC4iCDguK3guLjguJXguKrguLLguKvguIHguLLguKMp!5e0!3m2!1sth!2sth!4v1674207813565!5m2!1sth!2sth" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
 </div>
 
 

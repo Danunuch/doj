@@ -141,7 +141,7 @@ if (isset($_POST['add-news'])) {
                                 <span id="upload-img">Cover Image</span>
                                 <div class="group-pos">
                                     <input type="file" name="img-cover" id="imgInput-cover" class="form-control">
-                                    <button type="button" class="btn reset" id="reset1">Reset</button>
+                                   
                                 </div>
                                 <span class="file-support">Only file are support ('jpg', 'jpeg', 'png', 'webp').</span>
                                 <div id="gallery-cover">
@@ -187,7 +187,7 @@ if (isset($_POST['add-news'])) {
                                     <span id="upload-img">Content Image</span>
                                     <div class="group-pos">
                                         <input type="file" name="img[]" id="imgInput" onchange="preview_image();" class="form-control" multiple>
-                                        <button type="button" class="btn reset" id="reset2">Reset</button>
+                            
                                     </div>
                                     <span class="file-support">Only file are support ('jpg', 'jpeg', 'png', 'webp').</span>
                                     <div id="gallery"></div>

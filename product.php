@@ -36,44 +36,19 @@ $stmt = $conn->prepare("SELECT * FROM product_img");
 $stmt->execute();
 $row_product_img = $stmt->fetchAll();
 
-if (isset($_GET['lang']) && $_GET['pt_id']) {
-  $lang = $_GET['lang'];
-  $pt_id = $_GET['pt_id'];
-  if ($lang == "en") {
-    $stmt = $conn->prepare("SELECT * FROM product_en WHERE pt_id = :pt_id");
-    $stmt->bindParam(":pt_id", $pt_id);
-    $stmt->execute();
-    $row_product = $stmt->fetchAll();
-  } else if ($lang == "cn") {
-    $stmt = $conn->prepare("SELECT * FROM product_cn WHERE pt_id = :pt_id");
-    $stmt->bindParam(":pt_id", $pt_id);
-    $stmt->execute();
-    $row_product = $stmt->fetchAll();
-  } else {
-    $stmt = $conn->prepare("SELECT * FROM product WHERE pt_id = :pt_id");
-    $stmt->bindParam(":pt_id", $pt_id);
-    $stmt->execute();
-    $row_product = $stmt->fetchAll();
-  }
-} else {
-  $stmt = $conn->prepare("SELECT * FROM product WHERE pt_id = :pt_id");
-  $stmt->bindParam(":pt_id", $pt_id);
-  $stmt->execute();
-  $row_product = $stmt->fetchAll();
-}
-
 
 $product = $_GET['pt_id'];
+
 if (isset($_GET['lang'])) {
   $lang = $_GET['lang'];
   if ($lang == "en") {
     $stmt = $conn->prepare("SELECT * FROM category_product_en");
     $stmt->execute();
-    $row_category_ref = $stmt->fetchAll();
+    $row_category_product = $stmt->fetchAll();
   } else if ($lang == "cn") {
     $stmt = $conn->prepare("SELECT * FROM category_product_cn");
     $stmt->execute();
-    $row_category_ref = $stmt->fetchAll();
+    $row_category_product = $stmt->fetchAll();
   } else {
     $stmt = $conn->prepare("SELECT * FROM category_product");
     $stmt->execute();
@@ -131,6 +106,7 @@ if (isset($_GET['lang'])) {
   <?php include("header.php"); ?>
 
   <main>
+
     <section id="section-texthaed" class="bg-parallax" style="background:url(upload/section-texthaed.jpg) no-repeat top center;background-size:cover">
       <div class="container-xxl">
         <h2><?php if ($lang == 'en') {
@@ -177,52 +153,86 @@ if (isset($_GET['lang'])) {
             <div id='cssmenu'>
               <ul>
                 <?php for ($i = 0; $i < count($row_category_product); $i++) {
-                  
-                  if (isset($_GET['lang'])) {
-                    $lang = $_GET['lang'];
-                    if ($lang == "en") {
-                  $a = $conn->prepare("SELECT * FROM category_sub_en WHERE pt_id = :id");
-                  $a->bindParam(":id", $row_category_product[$i]['pt_id']);
-                  $a->execute();
-                  $row_a = $a->fetchAll();
-                } else if ($lang == "cn") {
-                  $a = $conn->prepare("SELECT * FROM category_sub_cn WHERE pt_id = :id");
-                  $a->bindParam(":id", $row_category_product[$i]['pt_id']);
-                  $a->execute();
-                  $row_a = $a->fetchAll();
-                } else {
-                  $a = $conn->prepare("SELECT * FROM category_sub WHERE pt_id = :id");
-                  $a->bindParam(":id", $row_category_product[$i]['pt_id']);
-                  $a->execute();
-                  $row_a = $a->fetchAll();
-                }
-              } else {
-                $a = $conn->prepare("SELECT * FROM category_sub WHERE pt_id = :id");
-                $a->bindParam(":id", $row_category_product[$i]['pt_id']);
-                $a->execute();
-                $row_a = $a->fetchAll();
-              }
-            
+
+
+                  if ($lang == 'en') {
+                    $a = $conn->prepare("SELECT * FROM category_sub_en WHERE pt_id = :id");
+                    $a->bindParam(":id", $row_category_product[$i]['pt_id']);
+                    $a->execute();
+                    $row_a = $a->fetchAll();
+                  } else if ($lang == 'cn') {
+                    $a = $conn->prepare("SELECT * FROM category_sub_cn WHERE pt_id = :id");
+                    $a->bindParam(":id", $row_category_product[$i]['pt_id']);
+                    $a->execute();
+                    $row_a = $a->fetchAll();
+                  } else {
+                    $a = $conn->prepare("SELECT * FROM category_sub WHERE pt_id = :id");
+                    $a->bindParam(":id", $row_category_product[$i]['pt_id']);
+                    $a->execute();
+                    $row_a = $a->fetchAll();
+                  }
+
+
+
                 ?>
-                  <li class='active has-sub'><a href='#'><?php if ($lang == 'en') {
-                                                            echo $row_category_product[$i]['type_name'];
-                                                          } else if ($lang == 'cn') {
-                                                            echo $row_category_product[$i]['type_name'];
-                                                          } else {
-                                                            echo $row_category_product[$i]['type_name'];
-                                                          } ?></a>
+                  <li class='active has-sub'><a href='#'><?php echo $row_category_product[$i]['type_name']; ?></a>
+
+
 
                     <ul>
                       <?php
-                      for ($j = 0; $j < count($row_a); $j++) { ?>
-                        <li><a href='#'><?php if ($lang == 'en') {
-                                          echo $row_a[$j]['sub_name'];;
-                                        } else if ($lang == 'cn') {
-                                          echo $row_a[$j]['sub_name'];;
-                                        } else {
-                                          echo $row_a[$j]['sub_name'];;
-                                        } ?>
-                          </a></li>
+                      for ($j = 0; $j < count($row_a); $j++) {
+                        if (isset($_GET['sub_id'])) {
+                          $sub_id = $_GET['sub_id'];
+                          if ($lang == "en") {
+                            $stmt = $conn->prepare("SELECT * FROM product_en WHERE id = :id");
+                            $stmt->bindParam(":id", $sub_id);
+                            $stmt->execute();
+                            $row_product = $stmt->fetchAll();
+                          } else if ($lang == "cn") {
+                            $stmt = $conn->prepare("SELECT * FROM product_cn WHERE id = :id");
+                            $stmt->bindParam(":id", $sub_id);
+                            $stmt->execute();
+                            $row_product = $stmt->fetchAll();
+                          } else if ($lang == "th") {
+                            $stmt = $conn->prepare("SELECT * FROM product WHERE id = :id");
+                            $stmt->bindParam(":id", $sub_id);
+                            $stmt->execute();
+                            $row_product = $stmt->fetchAll();
+                          } else {
+                            $stmt = $conn->prepare("SELECT * FROM product WHERE id = :id");
+                            $stmt->bindParam(":id", $sub_id);
+                            $stmt->execute();
+                            $row_product = $stmt->fetchAll();
+                          }
+                        } else if (!isset($_GET['sub_id']) && isset($_GET['lang'])) {
+                          if ($_GET['lang'] == "en") {
+                            $stmt = $conn->prepare("SELECT * FROM product_en ");
+                            $stmt->execute();
+                            $row_product = $stmt->fetchAll();
+                          } else if ($_GET['lang'] == "cn") {
+                            $stmt = $conn->prepare("SELECT * FROM product_cn ");
+                            $stmt->execute();
+                            $row_product = $stmt->fetchAll();
+                          } else if ($_GET['lang'] == "th") {
+                            $stmt = $conn->prepare("SELECT * FROM product ");
+                            $stmt->execute();
+                            $row_product = $stmt->fetchAll();
+                          }
+                        }else{
+                          $stmt = $conn->prepare("SELECT * FROM product ");
+                            $stmt->execute();
+                            $row_product = $stmt->fetchAll();
+                        }
+
+                      ?>
+                        <li><a href='product?sub_id=<?php echo $row_a[$j]['id'] ?>&<?php if ($lang == 'en') {
+                                                                                      echo 'lang=en';
+                                                                                    } else if ($lang == 'cn') {
+                                                                                      echo 'lang=cn';
+                                                                                    } else {
+                                                                                      echo 'lang=th';
+                                                                                    } ?>'><?php echo $row_a[$j]['sub_name']; ?></a></li>
                       <?php   }
                       ?>
 
@@ -278,13 +288,9 @@ if (isset($_GET['lang'])) {
                       <img class="img-fluid w-100" src="webpanelcw/upload/upload_product/<?php echo $row_product[$i]['cover_img']; ?>">
                     </div>
                     <div class="text-product">
-                      <h3><?php if ($lang == 'en') {
-                            echo $row_product[$i]['product_name'];
-                          } else if ($lang == 'cn') {
-                            echo $row_product[$i]['product_name'];
-                          } else {
-                            echo $row_product[$i]['product_name'];
-                          } ?></h3>
+                      <h3><?php
+                          echo $row_product[$i]['product_name'];
+                          ?></h3>
 
                       <div class="btn-product">
                         <div class="btn-down">

@@ -16,7 +16,7 @@
         </button>
       </div>
       <ul class="menu">
-        <li><a href="index"><?php if (isset($_GET['lang'])) {
+        <li><a href="index<?php if(isset($_GET['lang'])){if($_GET['lang'] == "en"){echo '?lang=en';}else if($_GET['lang'] == 'cn'){echo '?lang=cn';}else{echo '?lang=th';}}else{echo "";} ?>"><?php if (isset($_GET['lang'])) {
                               if ($_GET['lang'] == "en") {
                                 echo "Home";
                               }
@@ -33,7 +33,7 @@
                             } ?></a></li>
 
 
-        <li><a href="about"><?php if (isset($_GET['lang'])) {
+        <li><a href="about<?php if(isset($_GET['lang'])){if($_GET['lang'] == "en"){echo '?lang=en';}else if($_GET['lang'] == 'cn'){echo '?lang=cn';}else{echo '?lang=th';}}else{echo "";} ?>"><?php if (isset($_GET['lang'])) {
                               if ($_GET['lang'] == "en") {
                                 echo "About Us";
                               }
@@ -50,7 +50,7 @@
                             } ?></a></li>
 
                             
-        <li><a href="service"><?php if (isset($_GET['lang'])) {
+        <li><a href="service<?php if(isset($_GET['lang'])){if($_GET['lang'] == "en"){echo '?lang=en';}else if($_GET['lang'] == 'cn'){echo '?lang=cn';}else{echo '?lang=th';}}else{echo "";} ?>"><?php if (isset($_GET['lang'])) {
                               if ($_GET['lang'] == "en") {
                                 echo "Services";
                               }
@@ -67,7 +67,7 @@
                             } ?></a></li>
 
 
-        <li><a href="project"><?php if (isset($_GET['lang'])) {
+        <li><a href="project<?php if(isset($_GET['lang'])){if($_GET['lang'] == "en"){echo '?lang=en';}else if($_GET['lang'] == 'cn'){echo '?lang=cn';}else{echo '?lang=th';}}else{echo "";} ?>"><?php if (isset($_GET['lang'])) {
                               if ($_GET['lang'] == "en") {
                                 echo "Project References";
                               }
@@ -84,7 +84,7 @@
                             } ?></a></li>
 
 
-        <li><a href="product"><?php if (isset($_GET['lang'])) {
+        <li><a href="product<?php if(isset($_GET['lang'])){if($_GET['lang'] == "en"){echo '?lang=en';}else if($_GET['lang'] == 'cn'){echo '?lang=cn';}else{echo '?lang=th';}}else{echo "";} ?>"><?php if (isset($_GET['lang'])) {
                               if ($_GET['lang'] == "en") {
                                 echo "Product";
                               }
@@ -101,7 +101,7 @@
                             } ?></a></li>
 
 
-        <li><a href="contact"><?php if (isset($_GET['lang'])) {
+        <li><a href="contact<?php if(isset($_GET['lang'])){if($_GET['lang'] == "en"){echo '?lang=en';}else if($_GET['lang'] == 'cn'){echo '?lang=cn';}else{echo '?lang=th';}}else{echo "";} ?>"><?php if (isset($_GET['lang'])) {
                               if ($_GET['lang'] == "en") {
                                 echo "Contact Us";
                               }
@@ -117,7 +117,7 @@
                               echo "ติดต่อเรา";
                             } ?></a></li>
 
-        <li><a href="new"><?php if (isset($_GET['lang'])) {
+        <li><a href="new<?php if(isset($_GET['lang'])){if($_GET['lang'] == "en"){echo '?lang=en';}else if($_GET['lang'] == 'cn'){echo '?lang=cn';}else{echo '?lang=th';}}else{echo "";} ?>"><?php if (isset($_GET['lang'])) {
                               if ($_GET['lang'] == "en") {
                                 echo "News & Blog";
                               }

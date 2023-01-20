@@ -26,7 +26,7 @@ if (isset($_GET['lang'])) {
 	if ($lang == "en") {
 		$stmt = $conn->prepare("SELECT * FROM content_en");
 		$stmt->execute();
-		$row_content = $stmt->fetchAll();
+		$row_content = $stmt->fetch(PDO::FETCH_ASSOC);
 	} else if ($lang == "cn") {
 		$stmt = $conn->prepare("SELECT * FROM content_cn");
 		$stmt->execute();
@@ -151,17 +151,13 @@ if (isset($_GET['lang'])) {
 		<section id="intro-section" class="bg-parallax" style="background:url(images/intro-section.jpg) no-repeat top center; background-size:cover;">
 			<div class="container-xxl">
 				<div class="text-center">
-					<p><?php if ($lang == 'en') {
+					<p><?php
 							echo $row_content['content1'];
-						} else if ($lang == 'cn') {
-							echo $row_content['content1'];
-						} else {
-							echo $row_content['content1'];
-						} ?>
+						?>
 					</p>
 				</div>
 				<div class="row">
-					<?php for ($i = 0; $i <= 2; $i++) { ?>
+					<?php for ($i = 0; $i <count($row_content_img); $i++) { ?>
 						<div class="col-lg-4 p-5">
 							<div class="item-intro">
 								<img class="img-fluid" src="webpanelcw/upload/upload_content/<?php echo $row_content_img[$i]['img']; ?>">
@@ -170,13 +166,9 @@ if (isset($_GET['lang'])) {
 					<?php } ?>
 				</div>
 				<div class="text-center">
-					<p><?php if ($lang == 'en') {
+					<p><?php 
 							echo $row_content['content2'];
-						} else if ($lang == 'cn') {
-							echo $row_content['content2'];
-						} else {
-							echo $row_content['content2'];
-						} ?>
+					 ?>
 
 					</p>
 				</div>
@@ -234,13 +226,9 @@ if (isset($_GET['lang'])) {
 									<img class="img-fluid w-100" src="webpanelcw/upload/upload_service/<?php echo $row_service_img[$i]['image']; ?>">
 								</div>
 								<div class="text-service">
-									<h4><?php if ($lang == 'en') {
+									<h4><?php 
 											echo $row_service[$i]['service_name'];
-										} else if ($lang == 'cn') {
-											echo $row_service[$i]['service_name'];
-										} else {
-											echo $row_service[$i]['service_name'];
-										} ?></h4>
+										 ?></h4>
 									<span class="btn btn-outline-light"><?php if ($lang == 'en') {
 																			echo "Read more";
 																		} else if ($lang == 'cn') {
@@ -257,7 +245,7 @@ if (isset($_GET['lang'])) {
 				</div>
 
 				<div class="text-center mt-5">
-					<a href="service" class="btn btn-outline-dark text-uppercase"><?php if ($lang == 'en') {
+					<a href="service<?php if (isset($_GET['lang'])){if($_GET['lang'] == 'en'){echo '?lang=en';}else if($_GET['lang'] == 'cn'){echo '?lang=cn';}else{echo '?lang=th';}}else{echo '';} ?>" class="btn btn-outline-dark text-uppercase"><?php if ($lang == 'en') {
 																							echo "View all";
 																						} else if ($lang == 'cn') {
 																							echo "查看全部";
@@ -325,20 +313,16 @@ if (isset($_GET['lang'])) {
 									</div>
 
 									<div class="text-portfolio">
-										<h4><?php if ($lang == 'en') {
+										<h4><?php 
 												echo $row_project[$i]['project_name'];
-											} else if ($lang == 'cn') {
-												echo $row_project[$i]['project_name'];
-											} else {
-												echo $row_project[$i]['project_name'];
-											} ?></h4>
+											 ?></h4>
 									</div>
 								</a>
 							</div>
 						<?php } ?>
 
 						<div class="col-md-6 col-lg-4 mt-5">
-							<a href="project" class="btn btn-success btn-lg rounded-0 py-2 px-5 w-100 text-uppercase"><?php if ($lang == 'en') {
+							<a href="project<?php if (isset($_GET['lang'])){if($_GET['lang'] == 'en'){echo '?lang=en';}else if($_GET['lang'] == 'cn'){echo '?lang=cn';}else{echo '?lang=th';}}else{echo '';} ?>" class="btn btn-success btn-lg rounded-0 py-2 px-5 w-100 text-uppercase"><?php if ($lang == 'en') {
 																																echo "view all project";
 																															} else if ($lang == 'cn') {
 																																echo "查看所有作品";
@@ -380,7 +364,7 @@ if (isset($_GET['lang'])) {
 
 
 					<div class="col-md-6 text-center text-lg-end order-3 order-md-2">
-						<a href="new" class="btn btn-outline-dark text-uppercase"><?php if ($lang == 'en') {
+						<a href="new<?php if (isset($_GET['lang'])){if($_GET['lang'] == 'en'){echo '?lang=en';}else if($_GET['lang'] == 'cn'){echo '?lang=cn';}else{echo '?lang=th';}}else{echo '';} ?>" class="btn btn-outline-dark text-uppercase"><?php if ($lang == 'en') {
 																							echo "View all";
 																						} else if ($lang == 'cn') {
 																							echo "查看全部";
@@ -411,20 +395,12 @@ if (isset($_GET['lang'])) {
 
 
 										<div class="text-new">
-											<h4><?php if ($lang == 'en') {
+											<h4><?php 
 												echo $row_news[$i]['news_name'];
-											} else if ($lang == 'cn') {
-												echo $row_news[$i]['news_name'];
-											} else {
-												echo $row_news[$i]['news_name'];
-											} ?>...</h4>
-											<p><?php if ($lang == 'en') {
+											?>...</h4>
+											<p><?php 
 												echo $row_news[$i]['content'];
-											} else if ($lang == 'cn') {
-												echo $row_news[$i]['content'];
-											} else {
-												echo $row_news[$i]['content'];
-											} ?>
+											?>
 											</p>
 
 											<span class="btn btn-outline-warning"><?php if ($lang == 'en') {

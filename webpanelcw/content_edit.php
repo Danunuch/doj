@@ -146,7 +146,7 @@ if (isset($_POST['edit-content'])) {
                                 <div class="content-img">
                                     <div class="group-pos">
                                         <input type="file" name="img[]" id="imgInput" onchange="preview_image();" class="form-control" multiple>
-                                        <button type="button" class="btn reset" id="reset2">Reset</button>
+                                 
                                     </div>
                                     <span class="file-support">Only file are support ('jpg', 'jpeg', 'png', 'webp').</span>
                                     <div id="gallery">

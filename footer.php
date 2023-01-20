@@ -85,13 +85,13 @@ if (isset($_GET['lang'])) {
                     <div class="mb-4">
                         <h5>Social</h5>
 
-                        <a href="link_facebook"><i class="demo-icon icon-facebook"></i></a>
-                        <a href="link_instagram"><i class="demo-icon icon-instagram"></i></a>
-                        <a href="link_line"><i class="demo-icon icon-line"></i></a>
+                        <a href="#"><i class="demo-icon icon-facebook"></i></a>
+                        <a href="#"><i class="demo-icon icon-instagram"></i></a>
+                        <a href="#"><i class="demo-icon icon-line"></i></a>
                     </div>
 
-                    <a href="link_company" class="btn btn-warning rounded-0 py-2 px-5 text-uppercase">Company profile</a>
-                    <a href="link_regulations" class="btn btn-success  rounded-0 py-2 px-5 text-uppercase">Regulations Bill-receiving checks</a>
+                    <a href="#" class="btn btn-warning rounded-0 py-2 px-5 text-uppercase">Company profile</a>
+                    <a href="#" class="btn btn-success  rounded-0 py-2 px-5 text-uppercase">Regulations Bill-receiving checks</a>
 
 
                 </div>

@@ -47,6 +47,42 @@ if (isset($_POST['edit-ref'])) {
                     </script>";
     }
 }
+
+
+
+
+// delete ref
+if (isset($_POST['delete_ref'])) {
+    $ref_id = $_POST['delete_ref'];
+    $del_ref = $conn->prepare("DELETE FROM category_ref WHERE ref_id = :id");
+    $del_ref->bindParam(":id", $ref_id);
+    $del_ref->execute();
+
+    if ($del_ref) {
+        echo "<script>
+        $(document).ready(function() {
+            Swal.fire({
+                text: 'Delete Type has been completed.',
+                icon: 'success',
+                timer: 10000,
+                showConfirmButton: false
+            });
+        })
+        </script>";
+        echo "<meta http-equiv='refresh' content='2;url=type_project'>";
+    } else {
+        echo "<script>
+        $(document).ready(function() {
+            Swal.fire({
+                text: 'Something Went Wrong!!!',
+                icon: 'error',
+                timer: 10000,
+                showConfirmButton: false
+            });
+        })
+        </script>";
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -103,8 +139,10 @@ if (isset($_POST['edit-ref'])) {
                                         <tr>
                                             <td align="center"><?php echo $row_ref['ref_name']; ?></td>
                                             <td align="center">
+                                            <form method="post">
                                                 <a type="input" class="btn btn-warning" style="color: #FFFFFF;" data-bs-toggle="modal" href="#edit-info<?php echo $row_ref['ref_id'] ?>"><i class="bi bi-pencil-square"></i></a>
-                                                <!-- <button type="button" class="btn" style="background-color:#ffc107; color: #FFFFFF;"><i class="bi bi-pencil-square"></i></button> -->
+                                                <button type="submit" class="btn" onclick="return confirm('ต้องการลบใช่หรือไม่?')" name="delete_ref" value="<?php echo $row_ref['ref_id']; ?>" style="background-color:red; color: #FFFFFF;"><i class="bi bi-trash3"></i></button>
+                                                </form>
                                             </td>
                                         </tr>
                                         <div class="modal fade" id="edit-info<?php echo $row_ref['ref_id'] ?>" data-bs-backdrop="static" aria-hidden="true">

@@ -85,6 +85,89 @@ if (isset($_POST['edit-sub'])) {
                     </script>";
     }
 }
+
+
+
+
+//delete cat main
+if (isset($_POST['delete_ref'])) {
+    $cat_id = $_POST['delete_ref'];
+
+    $q_sub = $conn->prepare("SELECT * FROM category_sub_cn WHERE pt_id = :id");
+    $q_sub->bindParam(":id", $cat_id);
+    $q_sub->execute();
+    $row_sub_cat = $q_sub->fetchAll();
+
+    //delete main
+    $del_cat_main = $conn->prepare("DELETE FROM category_product_cn WHERE pt_id = :id");
+    $del_cat_main->bindParam(":id", $cat_id);
+    $del_cat_main->execute();
+
+    //delete sub
+    for ($i = 0; $i < count($row_sub_cat); $i++) {
+        $del_in_sub = $conn->prepare("DELETE FROM category_sub_cn WHERE pt_id = :pt_id");
+        $del_in_sub->bindParam(":pt_id", $row_sub_cat[$i]['pt_id']);
+        $del_in_sub->execute();
+    }
+
+    if ($del_in_sub) {
+        echo "<script>
+        $(document).ready(function() {
+            Swal.fire({
+                text: 'Delete Type has been completed.',
+                icon: 'success',
+                timer: 10000,
+                showConfirmButton: false
+            });
+        })
+        </script>";
+        echo "<meta http-equiv='refresh' content='2;url=type_product_cn'>";
+    } else {
+        echo "<script>
+        $(document).ready(function() {
+            Swal.fire({
+                text: 'Something Went Wrong!!!',
+                icon: 'error',
+                timer: 10000,
+                showConfirmButton: false
+            });
+        })
+        </script>";
+    }
+}
+
+// delete sub
+if (isset($_POST['delete_sub'])) {
+    $sub_id = $_POST['delete_sub'];
+    $del_sub = $conn->prepare("DELETE FROM category_sub_cn WHERE id = :id");
+    $del_sub->bindParam(":id", $sub_id);
+    $del_sub->execute();
+
+    if ($del_sub) {
+        echo "<script>
+        $(document).ready(function() {
+            Swal.fire({
+                text: 'Delete Type has been completed.',
+                icon: 'success',
+                timer: 10000,
+                showConfirmButton: false
+            });
+        })
+        </script>";
+        echo "<meta http-equiv='refresh' content='2;url=type_product_cn'>";
+    } else {
+        echo "<script>
+        $(document).ready(function() {
+            Swal.fire({
+                text: 'Something Went Wrong!!!',
+                icon: 'error',
+                timer: 10000,
+                showConfirmButton: false
+            });
+        })
+        </script>";
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -141,8 +224,10 @@ if (isset($_POST['edit-sub'])) {
                                         <tr>
                                             <td align="center"><?php echo $row_type_product['type_name']; ?></td>
                                             <td align="center">
+                                            <form method="post">
                                                 <a type="input" class="btn btn-warning" style="color: #FFFFFF;" data-bs-toggle="modal" href="#edit-info<?php echo $row_type_product['pt_id'] ?>"><i class="bi bi-pencil-square"></i></a>
-                                                <!-- <button type="button" class="btn" style="background-color:#ffc107; color: #FFFFFF;"><i class="bi bi-pencil-square"></i></button> -->
+                                                <button type="submit" class="btn" name="delete_ref" value="<?php echo $row_type_product['pt_id'] ?>" onclick="return confirm('ต้องการลบใช่หรือไม่?')" style="background-color:red; color: #FFFFFF;"><i class="bi bi-trash3"></i></button>
+                                            </form>
                                             </td>
                                         </tr>
                                         <div class="modal fade" id="edit-info<?php echo $row_type_product['pt_id'] ?>" data-bs-backdrop="static" aria-hidden="true">
@@ -196,8 +281,10 @@ if (isset($_POST['edit-sub'])) {
                                             <tr>
                                                 <td align="center"><?php echo $row_sub_product['sub_name']; ?></td>
                                                 <td align="center">
+                                                <form method="post">
                                                     <a type="input" class="btn btn-warning" style="color: #FFFFFF;" data-bs-toggle="modal" href="#edit-sub<?php echo $row_sub_product['id'] ?>"><i class="bi bi-pencil-square"></i></a>
-                                                    <!-- <button type="button" class="btn" style="background-color:#ffc107; color: #FFFFFF;"><i class="bi bi-pencil-square"></i></button> -->
+                                                    <button type="submit" class="btn" onclick="return confirm('ต้องการลบใช่หรือไม่?')" name="delete_sub" value="<?php echo $row_sub_product['id']; ?>" style="background-color:red; color: #FFFFFF;"><i class="bi bi-trash3"></i></button>
+                                                </form>
                                                 </td>
                                             </tr>
                                             <div class="modal fade" id="edit-sub<?php echo $row_sub_product['id'] ?>" data-bs-backdrop="static" aria-hidden="true">

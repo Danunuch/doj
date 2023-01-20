@@ -1,6 +1,6 @@
 <?php
 require_once('webpanelcw/config/doj_db.php');
-//error_reporting(0);
+error_reporting(0);
 if (!isset($_SESSION)) {
   session_start();
 }
@@ -68,11 +68,6 @@ if (isset($_GET['service_id'])) {
   <link href="css/spinner.css" rel="stylesheet">
   <link href="css/bootstrap.min.css" rel="stylesheet">
 
-
-
-
-
-
 </head>
 
 
@@ -91,6 +86,8 @@ if (isset($_GET['service_id'])) {
   <?php include("header.php"); ?>
 
   <main>
+
+  
     <section id="section-texthaed" class="bg-parallax" style="background:url(upload/section-texthaed.jpg) no-repeat top center;background-size:cover">
       <div class="container-xxl">
         <h2><?php if (isset($_GET['lang'])) {

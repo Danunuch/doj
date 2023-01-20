@@ -25,7 +25,7 @@
 
 <?php
 require_once('webpanelcw/config/doj_db.php');
-//error_reporting(0);
+error_reporting(0);
 if (!isset($_SESSION)) {
   session_start();
 }

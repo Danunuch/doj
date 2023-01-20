@@ -54,8 +54,7 @@ if (isset($_GET['lang']) && $_GET['ref_id']) {
     $row_project = $stmt->fetchAll();
   }
 } else {
-  $stmt = $conn->prepare("SELECT * FROM project WHERE ref_id = :ref_id");
-  $stmt->bindParam(":ref_id", $ref_id);
+  $stmt = $conn->prepare("SELECT * FROM project");
   $stmt->execute();
   $row_project = $stmt->fetchAll();
 }
@@ -104,6 +103,7 @@ if (isset($_GET['lang'])) {
   <?php include("header.php"); ?>
 
   <main>
+
     <section id="section-texthaed" class="bg-parallax" style="background:url(upload/section-texthaed.jpg) no-repeat top center;background-size:cover">
       <div class="container-xxl">
         <h2><?php if ($lang == 'en') {

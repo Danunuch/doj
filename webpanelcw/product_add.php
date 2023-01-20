@@ -18,6 +18,8 @@ if (isset($_POST['add-product'])) {
     $link = $_POST['link'];
     $img_cover = $_FILES['img-cover'];
     $status = "on";
+    $pt_id = $_POST['type_name'];
+    $id = $_POST['sub_name'];
 
     $allow = array('jpg', 'jpeg', 'png', 'webp');
     $extention1 = explode(".", $img_cover['name']); //เเยกชื่อกับนามสกุลไฟล์
@@ -33,14 +35,18 @@ if (isset($_POST['add-product'])) {
         echo "<script>alert('Please Enter Content')</script>";
     } else if (empty($conclude)) {
         echo "<script>alert('Please Enter Conclusion')</script>";
+    } else if (empty($pt_id)) {
+        echo "<script>alert('กรุณาเลือกหมวดหมู่สินค้า')</script>";
+    } else if (empty($id)) {
+        echo "<script>alert('กรุณาเลือกหมวดย่อยสินค้า')</script>";
     } else {
         try {
 
             if (in_array($fileActExt1, $allow)) {
                 if ($img_cover['size'] > 0 && $img_cover['error'] == 0) {
                     if (move_uploaded_file($img_cover['tmp_name'], $filePath1)) {
-                        $product = $conn->prepare("INSERT INTO product(product_name, intro, content, conclude, link_video, cover_img ,status)
-                                        VALUES(:product_name, :intro, :content, :conclude, :link_video, :cover_img,:status)");
+                        $product = $conn->prepare("INSERT INTO product(product_name, intro, content, conclude, link_video, cover_img ,status, pt_id, id)
+                                        VALUES(:product_name, :intro, :content, :conclude, :link_video, :cover_img,:status, :pt_id, :id)");
                         $product->bindParam(":product_name", $product_name);
                         $product->bindParam(":intro", $intro);
                         $product->bindParam(":content", $content);
@@ -48,6 +54,8 @@ if (isset($_POST['add-product'])) {
                         $product->bindParam(":link_video", $link);
                         $product->bindParam(":cover_img", $fileNew1);
                         $product->bindParam(":status", $status);
+                        $product->bindParam(":pt_id", $pt_id);
+                        $product->bindParam(":id", $id);
                         $product->execute();
 
                         $id_product = $conn->lastInsertId();
@@ -125,6 +133,20 @@ if (isset($_POST['add-product'])) {
 
 </head>
 
+
+<?php
+
+$select_stmt = $conn->prepare("SELECT * FROM category_product");
+$select_stmt->execute();
+$query =  $select_stmt->fetchAll();
+
+
+$select_stmt = $conn->prepare("SELECT * FROM category_sub");
+$select_stmt->execute();
+$query_sub =  $select_stmt->fetchAll();
+
+?>
+
 <body>
     <div id="app">
         <?php include('sidebar.php'); ?>
@@ -134,7 +156,17 @@ if (isset($_POST['add-product'])) {
                     <i class="bi bi-justify fs-3"></i>
                 </a>
             </header>
+            <?php
+            $stmt = $conn->prepare("SELECT* FROM category_product");
+            $stmt->execute();
+            $category_product = $stmt->fetchAll();
 
+
+            $stmt_sub = $conn->prepare("SELECT* FROM category_sub");
+            $stmt_sub->execute();
+            $category_sub = $stmt_sub->fetchAll();
+
+            ?>
             <div class="page-heading">
                 <h3>Product Add</h3>
             </div>
@@ -143,7 +175,7 @@ if (isset($_POST['add-product'])) {
                     <div class="card">
                         <div class="card-header">
                             <h4 class="card-title">Product</h4>
-                            <button type="submit" name="add-product" class="btn btn-edit">Save</button>
+                            <button type="submit" name="add-product" class="btn btn-save">Save</button>
                         </div>
                         <div class="card-body">
 
@@ -152,13 +184,27 @@ if (isset($_POST['add-product'])) {
                                 <input type="text" name="product_name" class="form-control">
                                 <h6>Introduction</h6>
                                 <input type="text" name="intro" class="form-control">
+                                <h6 for="type_name" class="col-form-label">Category Product</h6>
+                                <select class="form-control" name="type_name" id="">
+                                    <option value="" selected disabled>Select</option>
+                                    <?php foreach ($query as $value) { ?>
+                                        <option value="<?= $value['pt_id'] ?>"><?= $value['type_name'] ?></option>
+                                    <?php } ?>
+                                </select>
+                                <h6 for="sub_name" class="col-form-label">Category Sub</h6>
+                                    <select class="form-control" name="sub_name" id="">
+                                        <option value="" selected disabled>Select</option>
+                                        <?php foreach ($query_sub as $value) { ?>
+                                            <option value="<?= $value['id'] ?>"><?= $value['sub_name'] ?></option>
+                                        <?php } ?>
+                                    </select>
                             </div>
                             <div class="title">
                                 <div class="title-img">
                                     <span id="upload-img">Cover Image</span>
                                     <div class="group-pos">
                                         <input type="file" name="img-cover" id="imgInput-cover" class="form-control">
-                                        <button type="button" class="btn reset" id="reset1">Reset</button>
+                                        
                                     </div>
                                     <span class="file-support">Only file are support ('jpg', 'jpeg', 'png', 'webp').</span>
                                     <div id="gallery-cover">
@@ -174,7 +220,7 @@ if (isset($_POST['add-product'])) {
                                     <span id="upload-img">Content Image</span>
                                     <div class="group-pos">
                                         <input type="file" name="img[]" id="imgInput" onchange="preview_image();" class="form-control" multiple>
-                                        <button type="button" class="btn reset" id="reset2">Reset</button>
+                                        
                                     </div>
                                     <span class="file-support">Only file are support ('jpg', 'jpeg', 'png', 'webp').</span>
                                     <div id="gallery"></div>
@@ -184,7 +230,7 @@ if (isset($_POST['add-product'])) {
                                     <script>
                                         tinymce.init({
                                             selector: 'textarea',
-                                            branding:false,
+                                            branding: false,
                                             height: "400",
                                             plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
                                             toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
@@ -211,7 +257,8 @@ if (isset($_POST['add-product'])) {
                             <script>
                                 tinymce.init({
                                     selector: 'textarea',
-                                    height: "300",
+                                    height: "250",
+                                    branding: false,
                                     plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
                                     toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
                                     tinycomments_mode: 'embedded',
