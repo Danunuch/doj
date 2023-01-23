@@ -1,10 +1,10 @@
 <?php
 $servername = "localhost";
-$username = "root";
-$password = "";
+$username = "dojindustr18_db";
+$password = "fXUXY30egm";
 
 try {
-  $conn = new PDO("mysql:host=$servername;dbname=doj_system;charset=utf8", $username, $password);
+  $conn = new PDO("mysql:host=$servername;dbname=dojindustr18_db;charset=utf8", $username, $password);
   $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
  //echo "Connected successfully";
 } catch(PDOException $e) {
